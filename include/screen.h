@@ -3,12 +3,12 @@
 
 #include <stdint.h>
 
-#include "margin.h"
+#include "window.h"
 
 #define MAX_WINDOWS 8
 
 void initialize_screen();
-int8_t attach_window(Margin *margin);
+int8_t attach_window(Window *window);
 
 void print(int8_t window_id, const char *format, ...);
 void clear_screen();
