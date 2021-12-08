@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "constants.h": "c",
-        "pspdebug.h": "c",
-        "screen.h": "c"
-    }
-}
