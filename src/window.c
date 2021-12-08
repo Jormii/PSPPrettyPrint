@@ -1,7 +1,12 @@
 #include "window.h"
 
+#include <assert.h>
+
 Window window_from_margin(const Margin *margin)
 {
+    assert(margin->left <= margin->right);
+    assert(margin->top <= margin->bottom);
+
     Window w;
     w.margin.left = margin->left;
     w.margin.right = margin->right;
