@@ -3,6 +3,7 @@
 #include <pspkernel.h>
 #include <pspdisplay.h>
 
+#include "rgb.h"
 #include "screen.h"
 #include "window.h"
 #include "callbacks.h"
@@ -24,7 +25,7 @@ int main()
     Window frame = window_from_margin(&frames_margin);
 
     Margin lefts_margin = {
-        .left = 2,
+        .left = 1,
         .right = (MAX_CHAR_HORIZONTAL >> 1) - 1,
         .top = 2,
         .bottom = MAX_CHAR_VERTICAL - 2};
@@ -32,7 +33,7 @@ int main()
 
     Margin rights_margin = {
         .left = (MAX_CHAR_HORIZONTAL >> 1) + 1,
-        .right = MAX_CHAR_HORIZONTAL - 2,
+        .right = MAX_CHAR_HORIZONTAL - 1,
         .top = 2,
         .bottom = MAX_CHAR_VERTICAL - 2};
     Window right = window_from_margin(&rights_margin);
@@ -58,10 +59,13 @@ int main()
     {
         print_frame(&frame, frames_id);
 
-        i = (i + 1) % 10;
+        i = (i + 1) % 7;
+        left.color = RGB(255 * (i & 1), 255 * (i & 2), 255 * (i & 4));
         print(lefts_id, "%d", i);
 
-        print(rights_id, "%d", i % 2);
+        int j = i % 5;
+        right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
+        print(rights_id, "%d", j);
 
         update_screen();
         sceDisplayWaitVblankStart();
@@ -90,6 +94,7 @@ void print_frame(Window *frame, int8_t frame_id)
         print(frame_id, "-");
     }
 
+#if 0
     // Columns
     for (int y = margin->top + 1; y < (margin->bottom - 1); ++y)
     {
@@ -103,4 +108,5 @@ void print_frame(Window *frame, int8_t frame_id)
         cursor->y = y;
         print(frame_id, "I");
     }
+#endif
 }

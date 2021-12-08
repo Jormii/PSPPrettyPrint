@@ -6,6 +6,7 @@
 
 typedef struct Window_st
 {
+    uint32_t color;
     Cursor cursor;
     Margin margin;
 } Window;

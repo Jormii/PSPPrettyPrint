@@ -8,6 +8,7 @@
 
 #include <pspdebug.h>
 
+#include "rgb.h"
 #include "constants.h"
 
 #define BIT_IS_SET(x, bit) (x & (1UL << bit))
@@ -19,6 +20,7 @@ uint8_t active_windows = 0;
 Window *windows[MAX_WINDOWS];
 
 char screen_buffer[MAX_CHARACTERS];
+uint32_t screen_color[MAX_CHARACTERS];
 
 void print_word(int8_t window_id, const char *word, size_t word_length, char divider);
 
@@ -122,6 +124,7 @@ void print_word(int8_t window_id, const char *word, size_t word_length, char div
     for (size_t i = 0; i < word_length; ++i)
     {
         screen_buffer[buffer_index + i] = word[i];
+        screen_color[buffer_index + i] = w->color;
     }
 
     cursor->x = new_cursor_x;
@@ -153,9 +156,12 @@ void print_word(int8_t window_id, const char *word, size_t word_length, char div
 void clear_screen()
 {
     pspDebugScreenClear();
+
+    uint32_t white = RGB(255, 255, 255);
     for (int i = 0; i < MAX_CHARACTERS; ++i)
     {
         screen_buffer[i] = '\0';
+        screen_color[i] = white;
     }
 }
 
@@ -165,6 +171,7 @@ void update_screen()
     for (int i = 0; i < MAX_CHARACTERS; ++i)
     {
         const char *c = (screen_buffer[i] == '\0') ? " " : screen_buffer + i;
+        pspDebugScreenSetTextColor(screen_color[i]);
         pspDebugScreenPrintData(c, 1);
     }
 }
