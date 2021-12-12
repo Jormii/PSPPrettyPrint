@@ -1,15 +1,11 @@
 #include "screen.h"
 
-#include <stdio.h>
-#include <assert.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include <pspdebug.h>
 
 #include "rgb.h"
+#include "cursor.h"
 #include "constants.h"
+#include "log_error.h"
 
 #define BIT_IS_SET(x, bit) (x & (1UL << bit))
 #define SET_BIT_TO_1(x, bit) (x |= 1UL << bit)
@@ -22,7 +18,7 @@ Window *windows[MAX_WINDOWS];
 char screen_buffer[MAX_CHARACTERS];
 uint32_t screen_color[MAX_CHARACTERS];
 
-void print_word(int8_t window_id, const char *word, size_t word_length, char divider);
+int8_t print_word(int8_t window_id, const char *word, const uint32_t *word_color, size_t word_length, char divider, Cursor *cursor);
 
 void initialize_screen()
 {
@@ -35,6 +31,28 @@ void initialize_screen()
     pspDebugScreenInit();
     pspDebugScreenClearLineDisable();
     clear_screen();
+}
+
+void clear_screen()
+{
+    pspDebugScreenClear();
+    uint32_t white = RGB(255, 255, 255);
+    for (int i = 0; i < MAX_CHARACTERS; ++i)
+    {
+        screen_buffer[i] = '\0';
+        screen_color[i] = white;
+    }
+}
+
+void update_screen()
+{
+    pspDebugScreenSetXY(0, 0);
+    for (int i = 0; i < MAX_CHARACTERS; ++i)
+    {
+        const char *c = (screen_buffer[i] == '\0') ? " " : screen_buffer + i;
+        pspDebugScreenSetTextColor(screen_color[i]);
+        pspDebugScreenPrintData(c, 1);
+    }
 }
 
 int8_t attach_window(Window *window)
@@ -53,51 +71,48 @@ int8_t attach_window(Window *window)
     return -1;
 }
 
-void print(int8_t window_id, const char *format, ...)
+void update_window(int8_t window_id)
 {
-    assert(BIT_IS_SET(active_windows, window_id));
-
-    // Format string
-    va_list vararg;
-    va_start(vararg, format);
-
-    int length = 1 + vsnprintf(NULL, 0, format, vararg);
-    va_end(vararg);
-
-    va_start(vararg, format);
-    char *string = (char *)malloc(length);
-    vsnprintf(string, length, format, vararg);
-    va_end(vararg);
-
-    // Process string
-    size_t word_length = 0;
-    for (size_t c = 0; c < length; ++c)
+    if (!BIT_IS_SET(active_windows, window_id))
     {
-        switch (string[c])
+        log_error_and_idle("Tried to work with a window that wasn't active. This window has id %d", window_id);
+    }
+
+    const Window *w = windows[window_id];
+    Cursor cursor = {.x = w->margin.left, .y = w->margin.top};
+
+    size_t word_length = 0;
+    int8_t can_keep_printing = 1;
+    for (size_t i = 0; i < w->length && can_keep_printing; ++i)
+    {
+        switch (w->buffer[i])
         {
         case ' ':
         case '\n':
         case '\0':
-            print_word(window_id, string + c - word_length, word_length, string[c]);
+            can_keep_printing = print_word(
+                window_id,
+                w->buffer + i - word_length,
+                w->color_buffer + i - word_length,
+                word_length,
+                w->buffer[i],
+                &cursor);
             word_length = 0;
             break;
         default:
             word_length += 1;
         }
     }
-
-    free(string);
 }
 
-void print_word(int8_t window_id, const char *word, size_t word_length, char divider)
+int8_t print_word(int8_t window_id, const char *word, const uint32_t *word_color, size_t word_length, char divider, Cursor *cursor)
 {
     if (word_length == 0 && divider == '\0')
     {
-        return;
+        return 1;
     }
 
-    Window *w = windows[window_id];
-    Cursor *cursor = &(w->cursor);
+    const Window *w = windows[window_id];
     const Margin *margin = &(w->margin);
 
     // Update cursor
@@ -107,24 +122,21 @@ void print_word(int8_t window_id, const char *word, size_t word_length, char div
         cursor->x = margin->left;
         cursor->y += 1;
 
-        new_cursor_x = margin->left + word_length;
+        new_cursor_x = cursor->x + word_length;
     }
 
     if (cursor->y == margin->bottom)
     {
-        // TODO
-        cursor->y -= 1;
-#if 0
-        clear();
-#endif
+        // Reached last line -> Can't print
+        return 0;
     }
 
     // Update buffer and final cursor update
-    size_t buffer_index = cursor->x + cursor->y * MAX_CHAR_HORIZONTAL;
-    for (size_t i = 0; i < word_length; ++i)
+    size_t dst = cursor->x + cursor->y * MAX_CHAR_HORIZONTAL;
+    for (size_t src = 0; src < word_length; ++src, ++dst)
     {
-        screen_buffer[buffer_index + i] = word[i];
-        screen_color[buffer_index + i] = w->color;
+        screen_buffer[dst] = word[src];
+        screen_color[dst] = word_color[src];
     }
 
     cursor->x = new_cursor_x;
@@ -134,44 +146,20 @@ void print_word(int8_t window_id, const char *word, size_t word_length, char div
     {
     case '\n':
         // Writes a whitespace instead of a new line because that would trigger a jump when using the PSPSDK
-        screen_buffer[buffer_index + word_length] = ' ';
-
         cursor->x = margin->left;
         cursor->y += 1;
+        screen_buffer[dst] = ' ';
         break;
     case ' ':
-        screen_buffer[buffer_index + word_length] = ' ';
-
+        screen_buffer[dst] = ' ';
         cursor->x += 1;
         break;
     case '\0':
         break;
     default:
-        // Can't happen. Force exit
-        assert(0);
+        log_error_and_idle("Found unknown divider %c while printing to the screen", divider);
         break;
     }
-}
 
-void clear_screen()
-{
-    pspDebugScreenClear();
-
-    uint32_t white = RGB(255, 255, 255);
-    for (int i = 0; i < MAX_CHARACTERS; ++i)
-    {
-        screen_buffer[i] = '\0';
-        screen_color[i] = white;
-    }
-}
-
-void update_screen()
-{
-    pspDebugScreenSetXY(0, 0);
-    for (int i = 0; i < MAX_CHARACTERS; ++i)
-    {
-        const char *c = (screen_buffer[i] == '\0') ? " " : screen_buffer + i;
-        pspDebugScreenSetTextColor(screen_color[i]);
-        pspDebugScreenPrintData(c, 1);
-    }
+    return 1;
 }
