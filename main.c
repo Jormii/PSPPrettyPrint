@@ -20,7 +20,7 @@ int main()
         .left = 1,
         .right = (MAX_CHAR_HORIZONTAL >> 1) - 1,
         .top = 1,
-        .bottom = MAX_CHAR_VERTICAL - 2};
+        .bottom = MAX_CHAR_VERTICAL >> 1};
     Window left = create_window(&lefts_margin, MAX_CHARACTERS);
 
     Margin rights_margin = {

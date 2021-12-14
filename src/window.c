@@ -114,9 +114,20 @@ WindowStats window_stats(const Window *window)
             uint8_t prev_cursor_y = cursor.y;
             window_stats_special_character_found(margin, word_length, c, &cursor);
 
-            if (cursor.y < window->line && prev_cursor_y != cursor.y)
+            if (cursor.y <= window->line && prev_cursor_y != cursor.y)
             {
-                buffer_index = i - word_length;
+                switch (c)
+                {
+                case '\n':
+                    buffer_index = i + 1; // Next character after newline
+                    break;
+                case ' ':
+                    buffer_index = i - word_length; // Beginning of the word
+                    break;
+                default:
+                    log_error_and_idle("Unexpected error calculating window's stats");
+                    break;
+                }
             }
             word_length = 0;
             break;
@@ -127,7 +138,7 @@ WindowStats window_stats(const Window *window)
         }
     }
 
-    WindowStats stats = {.buffer_index = buffer_index, .lines_occupied = cursor.y};
+    WindowStats stats = {.buffer_index = buffer_index, .lines_occupied = cursor.y + 1};
     return stats;
 }
 
