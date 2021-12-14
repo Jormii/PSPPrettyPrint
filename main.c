@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include <pspctrl.h>
 #include <pspkernel.h>
 #include <pspdisplay.h>
 
@@ -43,17 +44,42 @@ int main()
     print_to_window(&left, "This text belongs to the window located on the left side (id=%d) of the screen\n\n", lefts_id);
     print_to_window(&right, "However, this text is being written to the window on the right (id=%d).\nIt is also slightly longer\n\n", rights_id);
 
+    SceCtrlData ctrl_data;
+    sceCtrlSetSamplingCycle(0);
+    sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
+
     int i = 0;
     while (running())
     {
+        // Print new data
         i = (i + 1) % 7;
         left.color = RGB(255 * (i & 1), 255 * (i & 2), 255 * (i & 4));
-        print_to_window(&left, "%d", i);
+        if (left.color == 0)
+        {
+            left.color = RGB(122, 122, 122);
+        }
+        print_to_window(&left, "%d ", i);
 
         int j = i % 5;
         right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
-        print_to_window(&right, "%d", j);
+        if (right.color == 0)
+        {
+            right.color = RGB(122, 122, 122);
+        }
+        print_to_window(&right, "%d ", j);
 
+        // Read input
+        sceCtrlReadBufferPositive(&ctrl_data, 1);
+        if (ctrl_data.Buttons & PSP_CTRL_UP)
+        {
+            scroll_window(&left, SCROLL_UP);
+        }
+        else if (ctrl_data.Buttons & PSP_CTRL_DOWN)
+        {
+            scroll_window(&left, SCROLL_DOWN);
+        }
+
+        // Update screen
         update_window(lefts_id);
         update_window(rights_id);
         update_screen();

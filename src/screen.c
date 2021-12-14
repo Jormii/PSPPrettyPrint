@@ -79,11 +79,12 @@ void update_window(int8_t window_id)
     }
 
     const Window *w = windows[window_id];
+    WindowStats stats = window_stats(w);
     Cursor cursor = {.x = w->margin.left, .y = w->margin.top};
 
     size_t word_length = 0;
     int8_t can_keep_printing = 1;
-    for (size_t i = 0; i < w->length && can_keep_printing; ++i)
+    for (size_t i = stats.buffer_index; i < w->length && can_keep_printing; ++i)
     {
         switch (w->buffer[i])
         {
