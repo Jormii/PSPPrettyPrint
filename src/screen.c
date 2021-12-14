@@ -7,6 +7,8 @@
 #include "constants.h"
 #include "log_error.h"
 
+#define BUFFER_INDEX(x, y) (x + y * MAX_CHAR_HORIZONTAL)
+
 uint8_t initialized = 0;
 char screen_buffer[MAX_CHARACTERS];
 uint32_t screen_color[MAX_CHARACTERS];
@@ -48,10 +50,17 @@ void update_screen()
     }
 }
 
+void print_character(char c, uint32_t color, uint8_t x, uint8_t y)
+{
+    size_t i = BUFFER_INDEX(x, y);
+    screen_buffer[i] = c;
+    screen_color[i] = color;
+}
+
 void clear_margin(const Margin *margin)
 {
     uint8_t width = margin->right - margin->left;
-    size_t buffer_index = margin->left + margin->top * MAX_CHAR_HORIZONTAL;
+    size_t buffer_index = BUFFER_INDEX(margin->left, margin->top);
     for (uint8_t y = margin->top; y <= margin->bottom; ++y)
     {
         for (uint8_t i = 0; i < width; ++i)
@@ -114,7 +123,7 @@ int8_t print_word(const char *word, const uint32_t *word_color, size_t word_leng
     }
 
     // Update buffer and final cursor update
-    size_t dst = cursor->x + cursor->y * MAX_CHAR_HORIZONTAL;
+    size_t dst = BUFFER_INDEX(cursor->x, cursor->y);
     for (size_t src = 0; src < word_length; ++src, ++dst)
     {
         screen_buffer[dst] = word[src];

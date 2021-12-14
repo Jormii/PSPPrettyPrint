@@ -88,8 +88,8 @@ int main()
         {
             update_window(&right);
         }
-        update_screen();
 
+        update_screen();
         sceDisplayWaitVblankStart();
     }
 
