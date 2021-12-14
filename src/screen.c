@@ -71,12 +71,36 @@ int8_t attach_window(Window *window)
     return -1;
 }
 
+void clear_window(int8_t window_id)
+{
+    if (!BIT_IS_SET(active_windows, window_id))
+    {
+        log_error_and_idle("Tried to work with a window that wasn't active. This window has id %d", window_id);
+    }
+
+    const Window *w = windows[window_id];
+    const Margin *margin = &(w->margin);
+
+    uint8_t width = margin->right - margin->left;
+    size_t buffer_index = margin->left + margin->top * MAX_CHAR_HORIZONTAL;
+    for (uint8_t y = margin->top; y <= margin->bottom; ++y)
+    {
+        for (uint8_t i = 0; i < width; ++i)
+        {
+            screen_buffer[buffer_index + i] = ' ';
+        }
+        buffer_index += MAX_CHAR_HORIZONTAL;
+    }
+}
+
 void update_window(int8_t window_id)
 {
     if (!BIT_IS_SET(active_windows, window_id))
     {
         log_error_and_idle("Tried to work with a window that wasn't active. This window has id %d", window_id);
     }
+
+    clear_window(window_id);
 
     const Window *w = windows[window_id];
     WindowStats stats = window_stats(w);

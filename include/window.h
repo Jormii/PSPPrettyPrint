@@ -5,6 +5,12 @@
 
 #include "margin.h"
 
+/**
+ * TODO: Known problems
+ * - Scroll: Multiple '\n' characters
+ * - Scroll: Won't scroll to a line that it's being printed
+ */
+
 typedef enum ScrollDirection_en
 {
     SCROLL_UP = 1,

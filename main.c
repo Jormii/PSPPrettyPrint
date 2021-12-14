@@ -49,6 +49,7 @@ int main()
     sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 
     int i = 0;
+    int update_right = 1;
     while (running())
     {
         // Print new data
@@ -58,7 +59,7 @@ int main()
         {
             left.color = RGB(122, 122, 122);
         }
-        print_to_window(&left, "%d ", i);
+        // print_to_window(&left, "%d ", i);
 
         int j = i % 5;
         right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
@@ -66,7 +67,10 @@ int main()
         {
             right.color = RGB(122, 122, 122);
         }
-        print_to_window(&right, "%d ", j);
+        if (update_right)
+        {
+            print_to_window(&right, "%d ", j);
+        }
 
         // Read input
         sceCtrlReadBufferPositive(&ctrl_data, 1);
@@ -78,10 +82,18 @@ int main()
         {
             scroll_window(&left, SCROLL_DOWN);
         }
+        else if (ctrl_data.Buttons & PSP_CTRL_SQUARE)
+        {
+            clear_window(rights_id);
+            update_right = !update_right;
+        }
 
         // Update screen
         update_window(lefts_id);
-        update_window(rights_id);
+        if (update_right)
+        {
+            update_window(rights_id);
+        }
         update_screen();
 
         sceDisplayWaitVblankStart();
