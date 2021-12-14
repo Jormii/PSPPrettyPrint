@@ -34,15 +34,9 @@ int main()
     setup_callbacks();
     initialize_screen();
 
-    int8_t lefts_id = attach_window(&left);
-    int8_t rights_id = attach_window(&right);
-
-    assert(lefts_id >= 0);
-    assert(rights_id >= 0);
-
     // Print
-    print_to_window(&left, "This text belongs to the window located on the left side (id=%d) of the screen\n\n", lefts_id);
-    print_to_window(&right, "However, this text is being written to the window on the right (id=%d).\nIt is also slightly longer\n\n", rights_id);
+    print_to_window(&left, "This text belongs to the window located on the left side of the screen\n\n");
+    print_to_window(&right, "However, this text is being written to the window on the right.\nIt is also slightly longer\n\n");
 
     SceCtrlData ctrl_data;
     sceCtrlSetSamplingCycle(0);
@@ -84,15 +78,15 @@ int main()
         }
         else if (ctrl_data.Buttons & PSP_CTRL_SQUARE)
         {
-            clear_window(rights_id);
+            clear_margin(&(right.margin));
             update_right = !update_right;
         }
 
         // Update screen
-        update_window(lefts_id);
+        update_window(&left);
         if (update_right)
         {
-            update_window(rights_id);
+            update_window(&right);
         }
         update_screen();
 

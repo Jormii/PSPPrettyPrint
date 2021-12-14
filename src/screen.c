@@ -7,18 +7,11 @@
 #include "constants.h"
 #include "log_error.h"
 
-#define BIT_IS_SET(x, bit) (x & (1UL << bit))
-#define SET_BIT_TO_1(x, bit) (x |= 1UL << bit)
-#define SET_BIT_TO_0(x, bit) (x &= ~(1UL << bit))
-
 uint8_t initialized = 0;
-uint8_t active_windows = 0;
-Window *windows[MAX_WINDOWS];
-
 char screen_buffer[MAX_CHARACTERS];
 uint32_t screen_color[MAX_CHARACTERS];
 
-int8_t print_word(int8_t window_id, const char *word, const uint32_t *word_color, size_t word_length, char divider, Cursor *cursor);
+int8_t print_word(const char *word, const uint32_t *word_color, size_t word_length, char divider, const Margin *margin, Cursor *cursor);
 
 void initialize_screen()
 {
@@ -55,32 +48,8 @@ void update_screen()
     }
 }
 
-int8_t attach_window(Window *window)
+void clear_margin(const Margin *margin)
 {
-    for (int i = 0; i < MAX_WINDOWS; ++i)
-    {
-        if (!BIT_IS_SET(active_windows, i))
-        {
-            windows[i] = window;
-            SET_BIT_TO_1(active_windows, i);
-
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-void clear_window(int8_t window_id)
-{
-    if (!BIT_IS_SET(active_windows, window_id))
-    {
-        log_error_and_idle("Tried to work with a window that wasn't active. This window has id %d", window_id);
-    }
-
-    const Window *w = windows[window_id];
-    const Margin *margin = &(w->margin);
-
     uint8_t width = margin->right - margin->left;
     size_t buffer_index = margin->left + margin->top * MAX_CHAR_HORIZONTAL;
     for (uint8_t y = margin->top; y <= margin->bottom; ++y)
@@ -93,35 +62,26 @@ void clear_window(int8_t window_id)
     }
 }
 
-void update_window(int8_t window_id)
+void update_window(const Window *window)
 {
-    if (!BIT_IS_SET(active_windows, window_id))
-    {
-        log_error_and_idle("Tried to work with a window that wasn't active. This window has id %d", window_id);
-    }
+    clear_margin(&(window->margin));
 
-    clear_window(window_id);
-
-    const Window *w = windows[window_id];
-    WindowStats stats = window_stats(w);
-    Cursor cursor = {.x = w->margin.left, .y = w->margin.top};
+    WindowStats stats = window_stats(window);
+    Cursor cursor = {.x = window->margin.left, .y = window->margin.top};
 
     size_t word_length = 0;
     int8_t can_keep_printing = 1;
-    for (size_t i = stats.buffer_index; i < w->length && can_keep_printing; ++i)
+    for (size_t i = stats.buffer_index; i < window->length && can_keep_printing; ++i)
     {
-        switch (w->buffer[i])
+        switch (window->buffer[i])
         {
         case ' ':
         case '\n':
         case '\0':
             can_keep_printing = print_word(
-                window_id,
-                w->buffer + i - word_length,
-                w->color_buffer + i - word_length,
-                word_length,
-                w->buffer[i],
-                &cursor);
+                window->buffer + i - word_length, window->color_buffer + i - word_length, word_length,
+                window->buffer[i],
+                &(window->margin), &cursor);
             word_length = 0;
             break;
         default:
@@ -130,15 +90,12 @@ void update_window(int8_t window_id)
     }
 }
 
-int8_t print_word(int8_t window_id, const char *word, const uint32_t *word_color, size_t word_length, char divider, Cursor *cursor)
+int8_t print_word(const char *word, const uint32_t *word_color, size_t word_length, char divider, const Margin *margin, Cursor *cursor)
 {
     if (word_length == 0 && divider == '\0')
     {
         return 1;
     }
-
-    const Window *w = windows[window_id];
-    const Margin *margin = &(w->margin);
 
     // Update cursor
     uint8_t new_cursor_x = cursor->x + word_length;
