@@ -20,14 +20,14 @@ int main()
         .left = 1,
         .right = (MAX_CHAR_HORIZONTAL >> 1) - 1,
         .top = 1,
-        .bottom = MAX_CHAR_VERTICAL - 1};
+        .bottom = MAX_CHAR_VERTICAL - 2};
     Window left = create_window(&lefts_margin, MAX_CHARACTERS);
 
     Margin rights_margin = {
         .left = (MAX_CHAR_HORIZONTAL >> 1) + 1,
-        .right = MAX_CHAR_HORIZONTAL - 1,
+        .right = MAX_CHAR_HORIZONTAL,
         .top = 1,
-        .bottom = MAX_CHAR_VERTICAL - 1};
+        .bottom = MAX_CHAR_VERTICAL - 2};
     Window right = create_window(&rights_margin, MAX_CHARACTERS);
 
     // Initialize and attach windows
@@ -59,7 +59,7 @@ int main()
         {
             left.color = RGB(122, 122, 122);
         }
-        // print_to_window(&left, "%d ", i);
+        print_to_window(&left, "%d ", i);
 
         int j = i % 5;
         right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));

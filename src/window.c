@@ -81,7 +81,7 @@ void scroll_window(Window *window, ScrollDirection direction)
         WindowStats stats = window_stats(window);
 
         size_t lines_under_cursor = stats.lines_occupied - window->line;
-        uint8_t height = m->bottom - m->top;
+        uint8_t height = m->bottom - m->top + 1;
         if (lines_under_cursor > height)
         {
             window->line += 1;

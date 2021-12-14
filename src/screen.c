@@ -150,7 +150,7 @@ int8_t print_word(int8_t window_id, const char *word, const uint32_t *word_color
         new_cursor_x = cursor->x + word_length;
     }
 
-    if (cursor->y == margin->bottom)
+    if (cursor->y > margin->bottom)
     {
         // Reached last line -> Can't print
         return 0;
