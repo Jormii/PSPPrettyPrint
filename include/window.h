@@ -5,6 +5,10 @@
 
 #include "margin.h"
 
+/**
+ * TODO: Problem when scrolling
+ */
+
 typedef enum ScrollDirection_en
 {
     SCROLL_UP = 1,

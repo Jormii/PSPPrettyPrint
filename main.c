@@ -9,6 +9,7 @@
 #include "window.h"
 #include "callbacks.h"
 #include "constants.h"
+#include "scrollbar.h"
 
 PSP_MODULE_INFO("PrettyPrint", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
@@ -29,6 +30,9 @@ int main()
         .top = 1,
         .bottom = MAX_CHAR_VERTICAL - 2};
     Window right = create_window(&rights_margin, MAX_CHARACTERS);
+
+    // Create scrollbar
+    Scrollbar lefts_scrollbar = {.window = &left, .x = lefts_margin.right + 1};
 
     // Initialize and attach windows
     setup_callbacks();
@@ -88,6 +92,7 @@ int main()
         {
             update_window(&right);
         }
+        display_scrollbar(&lefts_scrollbar);
 
         update_screen();
         sceDisplayWaitVblankStart();

@@ -59,7 +59,7 @@ void print_character(char c, uint32_t color, uint8_t x, uint8_t y)
 
 void clear_margin(const Margin *margin)
 {
-    uint8_t width = margin->right - margin->left;
+    uint8_t width = margin->right - margin->left + 1;
     size_t buffer_index = BUFFER_INDEX(margin->left, margin->top);
     for (uint8_t y = margin->top; y <= margin->bottom; ++y)
     {
