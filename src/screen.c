@@ -80,7 +80,7 @@ void update_window(const Window *window)
 
     size_t word_length = 0;
     int8_t can_keep_printing = 1;
-    for (size_t i = stats.buffer_index; i < window->length && can_keep_printing; ++i)
+    for (size_t i = stats.buffer_index; i <= window->length && can_keep_printing; ++i) // "i <="" to reach the final '\0' character
     {
         switch (window->buffer[i])
         {

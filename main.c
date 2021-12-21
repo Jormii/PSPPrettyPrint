@@ -57,7 +57,7 @@ int main()
         {
             left.color = RGB(122, 122, 122);
         }
-        print_to_window(&left, "%d ", i);
+        print_to_window(&left, "%d", i);
 
         int j = i % 5;
         right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
@@ -67,7 +67,7 @@ int main()
         }
         if (update_right)
         {
-            print_to_window(&right, "%d ", j);
+            print_to_window(&right, "%d", j);
         }
 
         // Read input
@@ -82,7 +82,7 @@ int main()
         }
         else if (ctrl_data.Buttons & PSP_CTRL_SQUARE)
         {
-            clear_margin(&(right.margin));
+            clear_margin(&(right.margin)); // TODO: Clear margin clears wrong cells
             update_right = !update_right;
         }
 
