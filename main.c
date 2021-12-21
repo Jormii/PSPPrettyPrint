@@ -19,14 +19,14 @@ int main()
     // Create windows
     Margin lefts_margin = {
         .left = 1,
-        .right = (MAX_CHAR_HORIZONTAL >> 1) - 1,
+        .right = (MAX_CHAR_HORIZONTAL >> 1) - 2,
         .top = 1,
         .bottom = MAX_CHAR_VERTICAL >> 1};
     Window left = create_window(&lefts_margin, MAX_CHARACTERS);
 
     Margin rights_margin = {
         .left = (MAX_CHAR_HORIZONTAL >> 1) + 1,
-        .right = MAX_CHAR_HORIZONTAL,
+        .right = MAX_CHAR_HORIZONTAL - 2,
         .top = 1,
         .bottom = MAX_CHAR_VERTICAL - 2};
     Window right = create_window(&rights_margin, MAX_CHARACTERS);
@@ -45,6 +45,15 @@ int main()
     SceCtrlData ctrl_data;
     sceCtrlSetSamplingCycle(0);
     sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
+
+    for (size_t i = 0; i < MAX_CHAR_HORIZONTAL; ++i)
+    {
+        print_character('0' + (i % 10), 0xFF777777, i, 0);
+    }
+    for (size_t i = 1; i < MAX_CHAR_VERTICAL; ++i)
+    {
+        print_character('0' + (i % 10), 0xFF333333, 0, i);
+    }
 
     int i = 0;
     int update_right = 1;

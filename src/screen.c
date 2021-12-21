@@ -13,6 +13,7 @@ uint8_t initialized = 0;
 char screen_buffer[MAX_CHARACTERS];
 uint32_t screen_color[MAX_CHARACTERS];
 
+void force_print(const char *word, const uint32_t *word_color, size_t word_length, const Margin *margin, Cursor *cursor);
 int8_t print_word(const char *word, const uint32_t *word_color, size_t word_length, char divider, const Margin *margin, Cursor *cursor);
 
 void initialize_screen()
@@ -77,11 +78,26 @@ void update_window(const Window *window)
 
     WindowStats stats = window_stats(window);
     Cursor cursor = {.x = window->margin.left, .y = window->margin.top};
+    uint8_t width = window->margin.right - window->margin.left + 1;
 
     size_t word_length = 0;
     int8_t can_keep_printing = 1;
     for (size_t i = stats.buffer_index; i <= window->length && can_keep_printing; ++i) // "i <="" to reach the final '\0' character
     {
+        if (word_length == width)
+        {
+            // A word so long it would need more than a line to be printed. Force print
+            uint8_t offset = window->margin.right - cursor.x + 1;
+            force_print(
+                window->buffer + i - offset, window->color_buffer + i - offset,
+                offset - 1, // "offset - 1" to consider the dash printed in the function called
+                &(window->margin), &cursor);
+
+            i -= 1;
+            word_length -= offset;
+            can_keep_printing = cursor.y <= window->margin.bottom;
+        }
+
         switch (window->buffer[i])
         {
         case ' ':
@@ -99,13 +115,26 @@ void update_window(const Window *window)
     }
 }
 
-int8_t print_word(const char *word, const uint32_t *word_color, size_t word_length, char divider, const Margin *margin, Cursor *cursor)
+void force_print(const char *word, const uint32_t *word_color, size_t word_length, const Margin *margin, Cursor *cursor)
 {
-    if (word_length == 0 && divider == '\0')
+    size_t dst = BUFFER_INDEX(cursor->x, cursor->y);
+    for (size_t src = 0; src < word_length; ++src, ++dst)
     {
-        return 1;
+        screen_buffer[dst] = word[src];
+        screen_color[dst] = word_color[src];
     }
 
+    // Print a dash to indicate the word had to be cut
+    screen_buffer[dst] = '-';
+    screen_color[dst] = 0xFFFFFFFF;
+
+    // Update variables
+    cursor->x = margin->left;
+    cursor->y += 1;
+}
+
+int8_t print_word(const char *word, const uint32_t *word_color, size_t word_length, char divider, const Margin *margin, Cursor *cursor)
+{
     // Update cursor
     uint8_t new_cursor_x = cursor->x + word_length;
     if (new_cursor_x > margin->right)
