@@ -25,6 +25,7 @@ Window create_window(const Margin *margin, size_t max_length)
     w.max_length = max_length;
     w.buffer = (char *)malloc(max_length * sizeof(char));
     w.color_buffer = (uint32_t *)malloc(max_length * sizeof(uint32_t));
+    w.overflow_behaviour = buffer_overflow_clear;
 
     w.line = 0;
     w.color = RGB(255, 255, 255);
@@ -53,22 +54,23 @@ void print_to_window(Window *window, const char *format, ...)
 
     // Process string
     size_t final_length = window->length + length - 1;
-    if (final_length < window->max_length)
+    if (final_length >= window->max_length)
     {
-        for (size_t src = 0, dst = window->length;
-             src < length;
-             ++src, ++dst)
-        {
-            window->buffer[dst] = string[src];
-            window->color_buffer[dst] = window->color;
-        }
+        // Handle overflow
+        window->overflow_behaviour(window);
+        final_length = window->length + length - 1;
+    }
 
-        window->length = final_length;
-    }
-    else
+    for (size_t src = 0, dst = window->length;
+         src < length;
+         ++src, ++dst)
     {
-        // TODO: Define buffer overflow behaviour
+        // Update buffer
+        window->buffer[dst] = string[src];
+        window->color_buffer[dst] = window->color;
     }
+
+    window->length = final_length;
 
     free(string);
 }
@@ -176,4 +178,20 @@ void window_stats_special_character_found(const Window *window, size_t i, size_t
         log_error_and_idle("Unknown divider (%c) found when obtaining the initial index for window", divider);
         break;
     }
+}
+
+void buffer_overflow_clear(Window *window)
+{
+    window->length = 0;
+    window->line = 0;
+}
+
+void buffer_overflow_clear_first_line(Window *window)
+{
+    log_error_and_idle("buffer_overflow_clear_first_line not yet implemented");
+}
+
+void buffer_overflow_clear_first_paragraph(Window *window)
+{
+    log_error_and_idle("buffer_overflow_clear_first_paragraph not yet implemented");
 }
