@@ -99,12 +99,28 @@ void scroll_window(Window *window, ScrollDirection direction)
 WindowStats window_stats(const Window *window)
 {
     const Margin *margin = &(window->margin);
+    uint8_t width = margin->right - margin->left + 1;
     Cursor cursor = {.x = margin->left, .y = 0}; // y = Lines occupied
 
     size_t word_length = 0;
     size_t buffer_index = 0;
     for (size_t i = 0; i < window->length; ++i)
     {
+        if (word_length == width)
+        {
+            // A word so long it would need more than a line to be printed. Consider it a new line
+            uint8_t offset = margin->right - cursor.x + 1;
+
+            cursor.x = margin->left;
+            cursor.y += 1;
+            if (cursor.y <= window->line)
+            {
+                buffer_index = i; // Character that caused the "overflow"
+            }
+
+            word_length -= offset;
+        }
+
         char c = window->buffer[i];
         switch (c)
         {

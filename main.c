@@ -91,7 +91,7 @@ int main()
         }
         else if (ctrl_data.Buttons & PSP_CTRL_SQUARE)
         {
-            clear_margin(&(right.margin)); // TODO: Clear margin clears wrong cells
+            clear_margin(&(right.margin));
             update_right = !update_right;
         }
 

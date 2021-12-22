@@ -90,10 +90,9 @@ void update_window(const Window *window)
             uint8_t offset = window->margin.right - cursor.x + 1;
             force_print(
                 window->buffer + i - offset, window->color_buffer + i - offset,
-                offset - 1, // "offset - 1" to consider the dash printed in the function called
+                offset,
                 &(window->margin), &cursor);
 
-            i -= 1;
             word_length -= offset;
             can_keep_printing = cursor.y <= window->margin.bottom;
         }
@@ -123,10 +122,6 @@ void force_print(const char *word, const uint32_t *word_color, size_t word_lengt
         screen_buffer[dst] = word[src];
         screen_color[dst] = word_color[src];
     }
-
-    // Print a dash to indicate the word had to be cut
-    screen_buffer[dst] = '-';
-    screen_color[dst] = 0xFFFFFFFF;
 
     // Update variables
     cursor->x = margin->left;
