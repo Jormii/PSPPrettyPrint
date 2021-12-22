@@ -3,7 +3,7 @@ SOURCE_DIR = ../src/
 INCLUDE_DIR = "../include/"
 
 TARGET = PSP_TARGET
-OBJS =  $(SOURCE_DIR)callbacks.o $(SOURCE_DIR)log_error.o $(SOURCE_DIR)window.o $(SOURCE_DIR)screen.o \
+OBJS =  $(SOURCE_DIR)callbacks.o $(SOURCE_DIR)log_error.o $(SOURCE_DIR)window.o $(SOURCE_DIR)scrollbar.o $(SOURCE_DIR)screen.o \
 		$(MAIN_OBJ)
 
 LIBS =

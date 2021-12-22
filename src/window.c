@@ -7,7 +7,7 @@
 #include "cursor.h"
 #include "log_error.h"
 
-void window_stats_special_character_found(const Margin *margin, size_t word_length, char divider, Cursor *cursor);
+void window_stats_special_character_found(const Window *window, size_t i, size_t word_length, char divider, Cursor *cursor, size_t *stats_buffer_index);
 
 Window create_window(const Margin *margin, size_t max_length)
 {
@@ -99,36 +99,35 @@ void scroll_window(Window *window, ScrollDirection direction)
 WindowStats window_stats(const Window *window)
 {
     const Margin *margin = &(window->margin);
+    uint8_t width = margin->right - margin->left + 1;
     Cursor cursor = {.x = margin->left, .y = 0}; // y = Lines occupied
 
     size_t word_length = 0;
     size_t buffer_index = 0;
     for (size_t i = 0; i < window->length; ++i)
     {
+        if (word_length == width)
+        {
+            // A word so long it would need more than a line to be printed. Consider it a new line
+            uint8_t offset = margin->right - cursor.x + 1;
+
+            cursor.x = margin->left;
+            cursor.y += 1;
+            if (cursor.y <= window->line)
+            {
+                buffer_index = i; // Character that caused the "overflow"
+            }
+
+            word_length -= offset;
+        }
+
         char c = window->buffer[i];
         switch (c)
         {
         case '\n':
         case ' ':
         {
-            uint8_t prev_cursor_y = cursor.y;
-            window_stats_special_character_found(margin, word_length, c, &cursor);
-
-            if (cursor.y <= window->line && prev_cursor_y != cursor.y)
-            {
-                switch (c)
-                {
-                case '\n':
-                    buffer_index = i + 1; // Next character after newline
-                    break;
-                case ' ':
-                    buffer_index = i - word_length; // Beginning of the word
-                    break;
-                default:
-                    log_error_and_idle("Unexpected error calculating window's stats");
-                    break;
-                }
-            }
+            window_stats_special_character_found(window, i, word_length, c, &cursor, &buffer_index);
             word_length = 0;
             break;
         }
@@ -142,8 +141,9 @@ WindowStats window_stats(const Window *window)
     return stats;
 }
 
-void window_stats_special_character_found(const Margin *margin, size_t word_length, char divider, Cursor *cursor)
+void window_stats_special_character_found(const Window *window, size_t i, size_t word_length, char divider, Cursor *cursor, size_t *stats_buffer_index)
 {
+    const Margin *margin = &(window->margin);
     uint8_t new_cursor_x = cursor->x + word_length;
     if (new_cursor_x > margin->right)
     {
@@ -151,6 +151,10 @@ void window_stats_special_character_found(const Margin *margin, size_t word_leng
         cursor->y += 1;
 
         new_cursor_x = cursor->x + word_length;
+        if (cursor->y <= window->line)
+        {
+            *stats_buffer_index = i - word_length; // Beginning of the word
+        }
     }
 
     cursor->x = new_cursor_x;
@@ -160,6 +164,10 @@ void window_stats_special_character_found(const Margin *margin, size_t word_leng
     case '\n':
         cursor->x = margin->left;
         cursor->y += 1;
+        if (cursor->y <= window->line)
+        {
+            *stats_buffer_index = i + 1; // Next character after newline
+        }
         break;
     case ' ':
         cursor->x += 1;
