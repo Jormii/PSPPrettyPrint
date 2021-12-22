@@ -188,7 +188,32 @@ void buffer_overflow_clear(Window *window)
 
 void buffer_overflow_clear_first_line(Window *window)
 {
-    log_error_and_idle("buffer_overflow_clear_first_line not yet implemented");
+    // Determine what region of the buffer to clear
+    window->line = 1;
+    WindowStats stats = window_stats(window);
+
+    if (stats.buffer_index == 0)
+    {
+        // Buffer occupies one line. Equivalent to clearing the buffer
+        buffer_overflow_clear(window);
+        return;
+    }
+
+    // Update buffer
+    for (size_t src = stats.buffer_index, dst = 0;
+         src < window->length;
+         ++src, ++dst)
+    {
+        window->buffer[dst] = window->buffer[src];
+        window->color_buffer[dst] = window->color_buffer[src];
+    }
+
+    // Update other variables
+    window->length -= stats.buffer_index;
+    if (window->line != 0)
+    {
+        window->line -= 1;
+    }
 }
 
 void buffer_overflow_clear_first_paragraph(Window *window)
