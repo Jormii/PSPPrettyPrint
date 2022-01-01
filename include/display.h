@@ -10,7 +10,7 @@
 #define DISPLAY_BUFFER_ADDRESS 0x4000000
 #define DRAW_BUFFER_ADDRESS 0x4300000
 #define BUFFER_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT)
-#define BUFFER_INDEX (x, y)(x + (SCREEN_HEIGHT - 1 - y) * SCREEN_WIDTH)
+#define BUFFER_INDEX(x, y) (x + (SCREEN_HEIGHT - 1 - y) * SCREEN_WIDTH)
 
 unsigned int *display_buffer;
 unsigned int *draw_buffer;

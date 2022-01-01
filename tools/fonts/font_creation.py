@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -29,12 +28,13 @@ class FontCreation:
 
     class Character:
 
-        def __init__(self, character, width, height):
+        def __init__(self, character, width, height, new_line=False, tab=False, return_carriage=False):
             self.character = character
             self.unicode = ord(character)
             self.unicode_hex = hex(self.unicode)
             self.width = width
             self.height = height
+            self.flags = (new_line << 2) + (tab << 1) + return_carriage
 
         def __repr__(self):
             return "{} ({} / {}). (w, h) = ({}, {})".format(
@@ -70,37 +70,13 @@ class FontCreation:
             unicode_set.add(character.unicode)
 
     def create_font(self):
-        self._create_character_header_file()
         self._write_font_set_header_file()
         self._write_font_header_source_file()
-
-    def _create_character_header_file(self):
-        character_header_template = """
-        #ifndef CHARACTER_H
-        #define CHARACTER_H
-
-        #include <stdint.h>
-
-        typedef struct Character_st
-        {
-            uint8_t flags;
-            uint8_t width;
-            uint8_t height;
-            uint8_t *bitmap;
-        } Character;
-
-        #endif"""
-
-        file = open("./character.h", "w")
-        file.write(character_header_template)
-        file.close()
 
     def _write_font_set_header_file(self):
         font_header_template = """
         #ifndef {name_up}_FONT_H
         #define {name_up}_FONT_H
-
-        #include <stdint.h>
 
         #include "character.h"
 
@@ -162,6 +138,8 @@ class FontCreation:
 
         # Definition
         bitmap = self.atlas.get(index)
+        bitmap = bitmap[:, :character.width]
+
         flatten = bitmap.flatten()
         bitmap_array_str = "{"
         for i in range(len(flatten)):
@@ -174,12 +152,13 @@ class FontCreation:
         definition_template = """
         uint8_t U_{unicode_hex}_{name_low}_bitmap[{width}*{height}] = {bitmap};
         Character U_{unicode_hex}_{name_low} = {{
-            .flags=0,
+            .flags={flags},
             .width={width},
             .height={height},
             .bitmap=U_{unicode_hex}_{name_low}_bitmap}};""".format(
             unicode_hex=character.unicode_hex,
             name_low=self.name_low,
+            flags=character.flags,
             width=character.width,
             height=character.height,
             bitmap=bitmap_array_str
@@ -196,27 +175,153 @@ class FontCreation:
 
         # Update
         definitions += definition_template
-        switch_cases += switch_case_template
         if index == self.unknown_character_index:
             default = "&U_{unicode_hex}_{name_low};".format(
                 unicode_hex=character.unicode_hex,
                 name_low=self.name_low)
+        else:
+            switch_cases += switch_case_template
 
         return definitions, default, switch_cases
 
 
 if __name__ == "__main__":
     width = 7
+    common_w = 5
     height = 10
 
     atlas = FontCreation.Atlas("./CharacterSet.png", width)
     characters = [
+        # Unknown character
+        FontCreation.Character("ô", width, height),
+
         # Control characters
         FontCreation.Character("\0", width, height),
-        FontCreation.Character("\t", width, height),
-        FontCreation.Character("\n", width, height),
-        FontCreation.Character("\r", width, height)
+        FontCreation.Character("\t", width, height, tab=True),
+        FontCreation.Character("\n", width, height, new_line=True),
+        FontCreation.Character("\r", width, height, return_carriage=True),
+
+        # Numbers
+        FontCreation.Character("0", common_w, height),
+        FontCreation.Character("1", 3, height),
+        FontCreation.Character("2", common_w, height),
+        FontCreation.Character("3", common_w, height),
+        FontCreation.Character("4", common_w, height),
+        FontCreation.Character("5", common_w, height),
+        FontCreation.Character("6", common_w, height),
+        FontCreation.Character("7", common_w, height),
+        FontCreation.Character("8", common_w, height),
+        FontCreation.Character("9", common_w, height),
+
+        # Lower case
+        FontCreation.Character("a", common_w, height),
+        FontCreation.Character("b", common_w, height),
+        FontCreation.Character("c", common_w, height),
+        FontCreation.Character("d", common_w, height),
+        FontCreation.Character("e", common_w, height),
+        FontCreation.Character("f", 4, height),
+        FontCreation.Character("g", common_w, height),
+        FontCreation.Character("h", 4, height),
+        FontCreation.Character("i", 2, height),
+        FontCreation.Character("j", 4, height),
+        FontCreation.Character("k", 4, height),
+        FontCreation.Character("l", 2, height),
+        FontCreation.Character("m", common_w, height),
+        FontCreation.Character("n", 4, height),
+        FontCreation.Character("o", common_w, height),
+        FontCreation.Character("p", common_w, height),
+        FontCreation.Character("q", common_w, height),
+        FontCreation.Character("r", common_w, height),
+        FontCreation.Character("s", common_w, height),
+        FontCreation.Character("t", 4, height),
+        FontCreation.Character("u", 4, height),
+        FontCreation.Character("v", common_w, height),
+        FontCreation.Character("w", common_w, height),
+        FontCreation.Character("x", 4, height),
+        FontCreation.Character("y", 4, height),
+        FontCreation.Character("z", 4, height),
+
+        # Upper case
+        FontCreation.Character("A", common_w, height),
+        FontCreation.Character("B", common_w, height),
+        FontCreation.Character("C", common_w, height),
+        FontCreation.Character("D", common_w, height),
+        FontCreation.Character("E", common_w, height),
+        FontCreation.Character("F", common_w, height),
+        FontCreation.Character("G", common_w, height),
+        FontCreation.Character("H", common_w, height),
+        FontCreation.Character("I", 3, height),
+        FontCreation.Character("J", common_w, height),
+        FontCreation.Character("K", common_w, height),
+        FontCreation.Character("L", common_w, height),
+        FontCreation.Character("M", common_w, height),
+        FontCreation.Character("N", common_w, height),
+        FontCreation.Character("O", common_w, height),
+        FontCreation.Character("P", common_w, height),
+        FontCreation.Character("Q", common_w, height),
+        FontCreation.Character("R", common_w, height),
+        FontCreation.Character("S", common_w, height),
+        FontCreation.Character("T", common_w, height),
+        FontCreation.Character("U", common_w, height),
+        FontCreation.Character("V", common_w, height),
+        FontCreation.Character("W", common_w, height),
+        FontCreation.Character("X", common_w, height),
+        FontCreation.Character("Y", common_w, height),
+        FontCreation.Character("Z", 4, height),
+
+        # Symbols
+        FontCreation.Character(" ", common_w, height),
+        FontCreation.Character("!", 3, height),
+        FontCreation.Character("\"", common_w, height),
+        FontCreation.Character("#", common_w, height),
+        FontCreation.Character("$", 4, height),
+        FontCreation.Character("%", 5, height),
+        FontCreation.Character("&", common_w, height),
+        FontCreation.Character("'", 2, height),
+        FontCreation.Character("(", 2, height),
+        FontCreation.Character(")", 2, height),
+        FontCreation.Character("*", common_w, height),
+        FontCreation.Character("+", common_w, height),
+        FontCreation.Character(",", 2, height),
+        FontCreation.Character("-", common_w, height),
+        FontCreation.Character(".", 2, height),
+        FontCreation.Character("/", common_w, height),
+        FontCreation.Character(":", 2, height),
+        FontCreation.Character(";", 2, height),
+        FontCreation.Character("<", 4, height),
+        FontCreation.Character("=", common_w, height),
+        FontCreation.Character(">", 4, height),
+        FontCreation.Character("?", common_w, height),
+        FontCreation.Character("@", common_w, height),
+        FontCreation.Character("[", 3, height),
+        FontCreation.Character("\\", common_w, height),
+        FontCreation.Character("]", 3, height),
+        FontCreation.Character("^", common_w, height),
+        FontCreation.Character("_", common_w, height),
+        FontCreation.Character("`", 2, height),
+        FontCreation.Character("{", 4, height),
+        FontCreation.Character("|", 1, height),
+        FontCreation.Character("}", 4, height),
+        FontCreation.Character("~", 4, height),
+
+        # Caracteres españoles
+        FontCreation.Character("á", common_w, height),
+        FontCreation.Character("é", common_w, height),
+        FontCreation.Character("í", 2, height),
+        FontCreation.Character("ñ", 4, height),
+        FontCreation.Character("ó", common_w, height),
+        FontCreation.Character("ú", 4, height),
+        FontCreation.Character("ü", 4, height),
+        FontCreation.Character("Á", common_w, height),
+        FontCreation.Character("É", common_w, height),
+        FontCreation.Character("Í", 3, height),
+        FontCreation.Character("Ñ", common_w, height),
+        FontCreation.Character("Ó", common_w, height),
+        FontCreation.Character("Ú", common_w, height),
+        FontCreation.Character("Ü", common_w, height),
+        FontCreation.Character("¡", 3, height),
+        FontCreation.Character("¿", common_w, height)
     ]
 
-    font_creation = FontCreation("control_characters", atlas, characters)
+    font_creation = FontCreation("base_character_set", atlas, characters, 0)
     font_creation.create_font()
