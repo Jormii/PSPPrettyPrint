@@ -158,7 +158,7 @@ class FontCreation:
             .bitmap=U_{unicode_hex}_{name_low}_bitmap}};""".format(
             unicode_hex=character.unicode_hex,
             name_low=self.name_low,
-            flags=character.flags,
+            flags=hex(character.flags),
             width=character.width,
             height=character.height,
             bitmap=bitmap_array_str
@@ -166,7 +166,7 @@ class FontCreation:
 
         # Switch case
         switch_case_template = """
-        case ({unicode_hex}):
+        case {unicode_hex}:
             c = &U_{unicode_hex}_{name_low};
             break;""".format(
             unicode_hex=character.unicode_hex,
