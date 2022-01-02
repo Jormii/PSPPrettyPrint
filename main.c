@@ -32,15 +32,15 @@ int main()
         .left = 1,
         .right = (SCREEN_WIDTH >> 1) - 1,
         .top = 1,
-        .bottom = SCREEN_HEIGHT - 2};
-    Window left = create_window(&lefts_margin, 1024);
+        .bottom = (SCREEN_HEIGHT >> 1)};
+    Window left = create_window(&lefts_margin, 2048);
 
     Margin rights_margin = {
         .left = (SCREEN_WIDTH >> 1) + 1,
         .right = SCREEN_WIDTH - 2,
         .top = 1,
         .bottom = SCREEN_HEIGHT - 2};
-    Window right = create_window(&rights_margin, 1024);
+    Window right = create_window(&rights_margin, 2048);
 
     // Create scrollbar
     Scrollbar lefts_scrollbar = {.window = &left, .x = lefts_margin.right + 1};
@@ -64,7 +64,7 @@ int main()
         {
             left.color = RGB(122, 122, 122);
         }
-        printf_to_window(&left, L"%d ", i);
+        printf_to_window(&left, L"%d", i);
 
         int j = i % 5;
         right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
@@ -97,9 +97,13 @@ int main()
         display_window(&left);
         if (update_right)
         {
+#if 0
             display_window(&right);
+#endif
         }
+#if 0
         display_scrollbar(&lefts_scrollbar);
+#endif
 
         swap_buffers();
         sceDisplayWaitVblankStart();

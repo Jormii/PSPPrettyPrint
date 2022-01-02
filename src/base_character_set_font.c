@@ -9,7 +9,7 @@ Character U_0xf4_base_character_set = {
 
 uint8_t U_0x0_base_character_set_bitmap[7 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x0_base_character_set = {
-    .character_type = CHAR_TYPE_NORMAL,
+    .character_type = CHAR_TYPE_NULL,
     .width = 7,
     .height = 10,
     .bitmap = U_0x0_base_character_set_bitmap};

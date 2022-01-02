@@ -6,10 +6,11 @@
 
 #define BUFFER_INDEX(x, y) (x + y * SCREEN_WIDTH)
 
-void draw_word(const wchar_t *word, const rgb *color, size_t length, FetchCharacter font, Cursor *cursor);
-void draw_character(const Character *character, rgb color, const Cursor *cursor);
+void draw_word(const Window *window, const wchar_t *word, const rgb *color, size_t length, Cursor *cursor);
+void draw_character(const Character *character, rgb color, const Margin *margin, const Cursor *cursor);
 
-void modify_cursor(Cursor *cursor, const Character *character, const Window *window);
+void force_draw(const Window *window, size_t starting_index, size_t *word_length, size_t *word_length_pixels, Cursor *cursor);
+void modify_cursor(const Window *window, Cursor *cursor, const Character *character);
 
 void clear_margin(const Margin *margin)
 {
@@ -35,41 +36,13 @@ void display_window(const Window *window)
     uint32_t word_length = 0;
     uint32_t word_length_pixels = 0;
     uint8_t can_keep_printing = 1;
-    for (size_t i = window->buffer_index; i < window->length && can_keep_printing; ++i)
+    for (size_t i = window->buffer_index; i <= window->length && can_keep_printing; ++i) // "<= length" to reach final '\0'
     {
-#if 0
         if (word_length_pixels > margin_width)
         {
             // A word so long it would need more than one line to be printed
-            wchar_t *word = window->buffer + i - word_length;
-            rgb *color = window->color_buffer + i - word_length;
-
-            uint8_t keep_force_printing = 1;
-            while (keep_force_printing)
-            {
-                const Character *character = window->font(*word);
-                uint32_t expected_cursor_x = cursor.x + character->width;
-
-                if (expected_cursor_x > window->margin.right)
-                {
-                    keep_force_printing = 0;
-
-                    cursor.x = window->margin.left;
-                    cursor.y += character->height;
-                }
-                else
-                {
-                    draw_word(word, color, 1, window->font, &cursor);
-                    cursor.x = expected_cursor_x + 1;
-
-                    word_length -= 1;
-                    word_length_pixels -= character->width - 1;
-                    word += 1;
-                    color += 1;
-                }
-            }
+            force_draw(window, i - word_length, &word_length, &word_length_pixels, &cursor);
         }
-#endif
 
         wchar_t unicode = window->buffer[i];
         const Character *character = window->font(unicode);
@@ -88,6 +61,7 @@ void display_window(const Window *window)
             break;
         case CHAR_TYPE_NEW_LINE:
         case CHAR_TYPE_WHITESPACE:
+        case CHAR_TYPE_NULL:
         {
             uint32_t expected_cursor_x = cursor.x + word_length_pixels - 1; // -1 to "remove" the pixel
                                                                             // between characters
@@ -97,53 +71,58 @@ void display_window(const Window *window)
                 cursor.y += character->height;
             }
         }
+
             draw_word(
+                window,
                 window->buffer + i - word_length,
                 window->color_buffer + i - word_length,
                 word_length,
-                window->font,
                 &cursor);
-
-            modify_cursor(&cursor, character, window);
 
             word_length = 0;
             word_length_pixels = 0;
-            can_keep_printing = cursor.y <= window->margin.bottom;
+            modify_cursor(window, &cursor, character);
             break;
         default:
             log_error_and_idle(L"Unknown character type %u linked to unicode %d", character->character_type, unicode);
         }
+
+        can_keep_printing = cursor.y <= window->margin.bottom;
     }
 }
 
-void draw_word(const wchar_t *word, const rgb *color, size_t length, FetchCharacter font, Cursor *cursor)
+void draw_word(const Window *window, const wchar_t *word, const rgb *color, size_t length, Cursor *cursor)
 {
     for (size_t i = 0; i < length; ++i)
     {
         wchar_t unicode = word[i];
-        const Character *c = font(unicode);
+        const Character *c = window->font(unicode);
         if (c != 0)
         {
-            draw_character(c, color[i], cursor);
+            draw_character(c, color[i], &(window->margin), cursor);
             cursor->x += c->width + ((i + 1) != length); // Add width and an additional pixel if not the last character
         }
     }
 }
 
-void draw_character(const Character *character, rgb color, const Cursor *cursor)
+void draw_character(const Character *character, rgb color, const Margin *margin, const Cursor *cursor)
 {
+    if (cursor->x > margin->right)
+    {
+        exit(0);
+    }
+
     size_t bitmap_index = 0;
     size_t buffer_index = BUFFER_INDEX(cursor->x, cursor->y);
 
-    for (uint32_t y = 0; y < character->height && y < SCREEN_HEIGHT; ++y)
+    uint32_t y0 = cursor->y;
+    uint32_t yf = cursor->y + character->height;
+    yf = (yf > margin->bottom) ? margin->bottom : yf;
+
+    for (uint32_t y = y0; y < yf; ++y)
     {
         for (uint32_t x = 0; x < character->width; ++x)
         {
-            if (buffer_index < 0 || buffer_index >= BUFFER_SIZE)
-            {
-                return;
-            }
-
             if (character->bitmap[bitmap_index])
             {
                 draw_buffer[buffer_index + x] = color;
@@ -156,7 +135,39 @@ void draw_character(const Character *character, rgb color, const Cursor *cursor)
     }
 }
 
-void modify_cursor(Cursor *cursor, const Character *character, const Window *window)
+void force_draw(const Window *window, size_t starting_index, size_t *word_length, size_t *word_length_pixels, Cursor *cursor)
+{
+    wchar_t *word = window->buffer + starting_index;
+    rgb *color = window->color_buffer + starting_index;
+
+    uint8_t keep_force_drawing = 1;
+    size_t iterations = *word_length;
+    for (size_t i = 0; i < iterations && keep_force_drawing; ++i)
+    {
+        const Character *character = window->font(*word);
+        uint32_t expected_cursor_x = cursor->x + character->width;
+
+        if (expected_cursor_x > window->margin.right)
+        {
+            keep_force_drawing = 0;
+
+            cursor->x = window->margin.left;
+            cursor->y += character->height;
+        }
+        else
+        {
+            draw_character(character, *color, &(window->margin), cursor);
+            cursor->x = expected_cursor_x + 1;
+
+            *word_length -= 1;
+            *word_length_pixels -= character->width - 1;
+            word += 1;
+            color += 1;
+        }
+    }
+}
+
+void modify_cursor(const Window *window, Cursor *cursor, const Character *character)
 {
     switch (character->character_type)
     {
@@ -175,6 +186,7 @@ void modify_cursor(Cursor *cursor, const Character *character, const Window *win
     case CHAR_TYPE_NORMAL:
     case CHAR_TYPE_TAB:
     case CHAR_TYPE_RETURN_CARRIAGE:
+    case CHAR_TYPE_NULL:
         break;
     }
 }

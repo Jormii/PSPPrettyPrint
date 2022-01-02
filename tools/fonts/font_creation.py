@@ -35,7 +35,8 @@ class FontCreation:
             CHAR_TYPE_NEW_LINE = 1,
             CHAR_TYPE_TAB = 2,
             CHAR_TYPE_RETURN_CARRIAGE = 3,
-            CHAR_TYPE_WHITESPACE = 4
+            CHAR_TYPE_WHITESPACE = 4,
+            CHAR_TYPE_NULL = 5
 
         def __init__(self, character, width, height, character_type=CharacterType.CHAR_TYPE_NORMAL):
             self.character = character
@@ -205,7 +206,8 @@ if __name__ == "__main__":
         FontCreation.Character("ô", width, height),
 
         # Control characters
-        FontCreation.Character("\0", width, height),
+        FontCreation.Character(
+            "\0", width, height, character_type=FontCreation.Character.CharacterType.CHAR_TYPE_NULL),
         FontCreation.Character(
             "\t", width, height, character_type=FontCreation.Character.CharacterType.CHAR_TYPE_TAB),
         FontCreation.Character(

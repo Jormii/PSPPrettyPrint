@@ -23,9 +23,12 @@ Window create_window(const Margin *margin, size_t max_length)
     Window w;
     w.length = 0;
     w.max_length = max_length;
-    w.buffer = (wchar_t *)malloc(max_length * sizeof(wchar_t));
-    w.color_buffer = (rgb *)malloc(max_length * sizeof(rgb));
+    w.buffer = (wchar_t *)malloc((max_length + 1) * sizeof(wchar_t));
+    w.color_buffer = (rgb *)malloc((max_length + 1) * sizeof(rgb));
     w.overflow_behaviour = buffer_overflow_clear;
+
+    w.buffer[0] = L'\0';
+    w.color_buffer[0] = 0;
 
     w.line = 0;
     w.color = 0xFFFFFFFF; // White
@@ -64,6 +67,9 @@ void print_to_window(Window *window, const wchar_t *string)
     }
 
     window->length = final_length;
+    window->buffer[window->length] = L'\0';
+    window->color_buffer[window->length] = 0;
+
     update_window_stats(window);
 }
 
@@ -204,7 +210,7 @@ void buffer_overflow_clear(Window *window)
 {
     window->length = 0;
     window->line = 0;
-    
+
     window->buffer_index = 0;
     window->lines_occupied = 1;
 }

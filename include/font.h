@@ -6,9 +6,10 @@
 
 #define CHAR_TYPE_NORMAL 0
 #define CHAR_TYPE_NEW_LINE 1
-#define CHAR_TYPE_TAB 2
+#define CHAR_TYPE_TAB 2             // TODO: Implement
 #define CHAR_TYPE_RETURN_CARRIAGE 3 // TODO: Implement
 #define CHAR_TYPE_WHITESPACE 4
+#define CHAR_TYPE_NULL 5
 
 typedef struct Character_st
 {
