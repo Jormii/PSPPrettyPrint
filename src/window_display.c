@@ -4,7 +4,7 @@
 #include "screen_buffer.h"
 #include "window_display.h"
 
-#define BUFFER_INDEX(x, y) (x + y * SCREEN_WIDTH)
+#define BUFFER_INDEX(x, y) (x + y * BUFFER_WIDTH)
 
 void draw_word(const Window *window, const wchar_t *word, const rgb *color, size_t length, Cursor *cursor);
 void draw_character(const Character *character, rgb color, const Margin *margin, const Cursor *cursor);
@@ -22,7 +22,7 @@ void clear_margin(const Margin *margin)
         {
             draw_buffer[buffer_index + i] = 0;
         }
-        buffer_index += SCREEN_WIDTH;
+        buffer_index += BUFFER_WIDTH;
     }
 }
 
@@ -70,7 +70,6 @@ void display_window(const Window *window)
                 cursor.x = window->margin.left;
                 cursor.y += character->height;
             }
-        }
 
             draw_word(
                 window,
@@ -83,6 +82,7 @@ void display_window(const Window *window)
             word_length_pixels = 0;
             modify_cursor(window, &cursor, character);
             break;
+        }
         default:
             log_error_and_idle(L"Unknown character type %u linked to unicode %d", character->character_type, unicode);
         }
@@ -107,11 +107,6 @@ void draw_word(const Window *window, const wchar_t *word, const rgb *color, size
 
 void draw_character(const Character *character, rgb color, const Margin *margin, const Cursor *cursor)
 {
-    if (cursor->x > margin->right)
-    {
-        exit(0);
-    }
-
     size_t bitmap_index = 0;
     size_t buffer_index = BUFFER_INDEX(cursor->x, cursor->y);
 
@@ -131,7 +126,7 @@ void draw_character(const Character *character, rgb color, const Margin *margin,
             bitmap_index += 1;
         }
 
-        buffer_index += SCREEN_WIDTH;
+        buffer_index += BUFFER_WIDTH;
     }
 }
 
@@ -160,7 +155,7 @@ void force_draw(const Window *window, size_t starting_index, size_t *word_length
             cursor->x = expected_cursor_x + 1;
 
             *word_length -= 1;
-            *word_length_pixels -= character->width - 1;
+            *word_length_pixels -= character->width + 1;
             word += 1;
             color += 1;
         }

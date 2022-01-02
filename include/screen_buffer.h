@@ -3,9 +3,10 @@
 
 #include "rgb.h"
 
-#define SCREEN_WIDTH 512
+#define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 272
-#define BUFFER_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT)
+#define BUFFER_WIDTH 512
+#define BUFFER_SIZE (BUFFER_WIDTH * SCREEN_HEIGHT)
 
 rgb *display_buffer;
 rgb *draw_buffer;

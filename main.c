@@ -54,6 +54,7 @@ int main()
     sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 
     int i = 0;
+    int j = 0;
     int update_right = 1;
     while (running())
     {
@@ -66,7 +67,7 @@ int main()
         }
         printf_to_window(&left, L"%d", i);
 
-        int j = i % 5;
+        j = (j + 1) % 5;
         right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
         if (right.color == 0)
         {
@@ -74,7 +75,7 @@ int main()
         }
         if (update_right)
         {
-            printf_to_window(&right, L"%d ", j);
+            printf_to_window(&right, L"%d", j);
         }
 
         // Read input
@@ -97,13 +98,9 @@ int main()
         display_window(&left);
         if (update_right)
         {
-#if 0
             display_window(&right);
-#endif
         }
-#if 0
         display_scrollbar(&lefts_scrollbar);
-#endif
 
         swap_buffers();
         sceDisplayWaitVblankStart();

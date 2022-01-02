@@ -30,7 +30,7 @@ void initialize_screen_buffer()
     }
 
     sceDisplaySetMode(0, SCREEN_ACTUAL_WIDTH, SCREEN_HEIGHT);
-    sceDisplaySetFrameBuf(display_buffer, SCREEN_WIDTH, PSP_DISPLAY_PIXEL_FORMAT_8888, PSP_DISPLAY_SETBUF_IMMEDIATE);
+    sceDisplaySetFrameBuf(display_buffer, BUFFER_WIDTH, PSP_DISPLAY_PIXEL_FORMAT_8888, PSP_DISPLAY_SETBUF_IMMEDIATE);
 }
 
 void clear_color_buffer(rgb color)
@@ -47,5 +47,5 @@ void swap_buffers()
     display_buffer = draw_buffer;
     draw_buffer = tmp;
 
-    sceDisplaySetFrameBuf(display_buffer, SCREEN_WIDTH, PSP_DISPLAY_PIXEL_FORMAT_8888, PSP_DISPLAY_SETBUF_NEXTFRAME);
+    sceDisplaySetFrameBuf(display_buffer, BUFFER_WIDTH, PSP_DISPLAY_PIXEL_FORMAT_8888, PSP_DISPLAY_SETBUF_NEXTFRAME);
 }
