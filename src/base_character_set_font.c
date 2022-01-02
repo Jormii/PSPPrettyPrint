@@ -2,812 +2,812 @@
 
 uint8_t U_0xf4_base_character_set_bitmap[7 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0xf4_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 7,
     .height = 10,
     .bitmap = U_0xf4_base_character_set_bitmap};
 
 uint8_t U_0x0_base_character_set_bitmap[7 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x0_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 7,
     .height = 10,
     .bitmap = U_0x0_base_character_set_bitmap};
 
 uint8_t U_0x9_base_character_set_bitmap[7 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x9_base_character_set = {
-    .flags = 0x4,
+    .character_type = CHAR_TYPE_TAB,
     .width = 7,
     .height = 10,
     .bitmap = U_0x9_base_character_set_bitmap};
 
 uint8_t U_0xa_base_character_set_bitmap[7 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0xa_base_character_set = {
-    .flags = 0x8,
+    .character_type = CHAR_TYPE_NEW_LINE,
     .width = 7,
     .height = 10,
     .bitmap = U_0xa_base_character_set_bitmap};
 
 uint8_t U_0xd_base_character_set_bitmap[7 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0xd_base_character_set = {
-    .flags = 0x2,
+    .character_type = CHAR_TYPE_RETURN_CARRIAGE,
     .width = 7,
     .height = 10,
     .bitmap = U_0xd_base_character_set_bitmap};
 
 uint8_t U_0x30_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x30_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x30_base_character_set_bitmap};
 
 uint8_t U_0x31_base_character_set_bitmap[3 * 10] = {0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0};
 Character U_0x31_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0x31_base_character_set_bitmap};
 
 uint8_t U_0x32_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x32_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x32_base_character_set_bitmap};
 
 uint8_t U_0x33_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x33_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x33_base_character_set_bitmap};
 
 uint8_t U_0x34_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x34_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x34_base_character_set_bitmap};
 
 uint8_t U_0x35_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x35_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x35_base_character_set_bitmap};
 
 uint8_t U_0x36_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x36_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x36_base_character_set_bitmap};
 
 uint8_t U_0x37_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x37_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x37_base_character_set_bitmap};
 
 uint8_t U_0x38_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x38_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x38_base_character_set_bitmap};
 
 uint8_t U_0x39_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x39_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x39_base_character_set_bitmap};
 
 uint8_t U_0x61_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x61_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x61_base_character_set_bitmap};
 
 uint8_t U_0x62_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x62_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x62_base_character_set_bitmap};
 
 uint8_t U_0x63_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x63_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x63_base_character_set_bitmap};
 
 uint8_t U_0x64_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x64_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x64_base_character_set_bitmap};
 
 uint8_t U_0x65_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x65_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x65_base_character_set_bitmap};
 
 uint8_t U_0x66_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x66_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x66_base_character_set_bitmap};
 
 uint8_t U_0x67_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0};
 Character U_0x67_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x67_base_character_set_bitmap};
 
 uint8_t U_0x68_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0};
 Character U_0x68_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x68_base_character_set_bitmap};
 
 uint8_t U_0x69_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0};
 Character U_0x69_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x69_base_character_set_bitmap};
 
 uint8_t U_0x6a_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0};
 Character U_0x6a_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x6a_base_character_set_bitmap};
 
 uint8_t U_0x6b_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0};
 Character U_0x6b_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x6b_base_character_set_bitmap};
 
 uint8_t U_0x6c_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0};
 Character U_0x6c_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x6c_base_character_set_bitmap};
 
 uint8_t U_0x6d_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x6d_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x6d_base_character_set_bitmap};
 
 uint8_t U_0x6e_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0};
 Character U_0x6e_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x6e_base_character_set_bitmap};
 
 uint8_t U_0x6f_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x6f_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x6f_base_character_set_bitmap};
 
 uint8_t U_0x70_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0};
 Character U_0x70_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x70_base_character_set_bitmap};
 
 uint8_t U_0x71_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1};
 Character U_0x71_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x71_base_character_set_bitmap};
 
 uint8_t U_0x72_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x72_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x72_base_character_set_bitmap};
 
 uint8_t U_0x73_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x73_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x73_base_character_set_bitmap};
 
 uint8_t U_0x74_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x74_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x74_base_character_set_bitmap};
 
 uint8_t U_0x75_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0};
 Character U_0x75_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x75_base_character_set_bitmap};
 
 uint8_t U_0x76_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x76_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x76_base_character_set_bitmap};
 
 uint8_t U_0x77_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x77_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x77_base_character_set_bitmap};
 
 uint8_t U_0x78_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0};
 Character U_0x78_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x78_base_character_set_bitmap};
 
 uint8_t U_0x79_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0};
 Character U_0x79_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x79_base_character_set_bitmap};
 
 uint8_t U_0x7a_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0};
 Character U_0x7a_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x7a_base_character_set_bitmap};
 
 uint8_t U_0x41_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x41_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x41_base_character_set_bitmap};
 
 uint8_t U_0x42_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x42_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x42_base_character_set_bitmap};
 
 uint8_t U_0x43_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x43_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x43_base_character_set_bitmap};
 
 uint8_t U_0x44_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x44_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x44_base_character_set_bitmap};
 
 uint8_t U_0x45_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x45_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x45_base_character_set_bitmap};
 
 uint8_t U_0x46_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x46_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x46_base_character_set_bitmap};
 
 uint8_t U_0x47_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x47_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x47_base_character_set_bitmap};
 
 uint8_t U_0x48_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x48_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x48_base_character_set_bitmap};
 
 uint8_t U_0x49_base_character_set_bitmap[3 * 10] = {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0};
 Character U_0x49_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0x49_base_character_set_bitmap};
 
 uint8_t U_0x4a_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x4a_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x4a_base_character_set_bitmap};
 
 uint8_t U_0x4b_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x4b_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x4b_base_character_set_bitmap};
 
 uint8_t U_0x4c_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x4c_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x4c_base_character_set_bitmap};
 
 uint8_t U_0x4d_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x4d_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x4d_base_character_set_bitmap};
 
 uint8_t U_0x4e_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x4e_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x4e_base_character_set_bitmap};
 
 uint8_t U_0x4f_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x4f_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x4f_base_character_set_bitmap};
 
 uint8_t U_0x50_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x50_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x50_base_character_set_bitmap};
 
 uint8_t U_0x51_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x51_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x51_base_character_set_bitmap};
 
 uint8_t U_0x52_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x52_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x52_base_character_set_bitmap};
 
 uint8_t U_0x53_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x53_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x53_base_character_set_bitmap};
 
 uint8_t U_0x54_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x54_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x54_base_character_set_bitmap};
 
 uint8_t U_0x55_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x55_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x55_base_character_set_bitmap};
 
 uint8_t U_0x56_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x56_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x56_base_character_set_bitmap};
 
 uint8_t U_0x57_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x57_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x57_base_character_set_bitmap};
 
 uint8_t U_0x58_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x58_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x58_base_character_set_bitmap};
 
 uint8_t U_0x59_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x59_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x59_base_character_set_bitmap};
 
 uint8_t U_0x5a_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0};
 Character U_0x5a_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x5a_base_character_set_bitmap};
 
 uint8_t U_0x20_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x20_base_character_set = {
-    .flags = 0x1,
+    .character_type = CHAR_TYPE_WHITESPACE,
     .width = 5,
     .height = 10,
     .bitmap = U_0x20_base_character_set_bitmap};
 
 uint8_t U_0x21_base_character_set_bitmap[3 * 10] = {0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
 Character U_0x21_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0x21_base_character_set_bitmap};
 
 uint8_t U_0x22_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x22_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x22_base_character_set_bitmap};
 
 uint8_t U_0x23_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x23_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x23_base_character_set_bitmap};
 
 uint8_t U_0x24_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x24_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x24_base_character_set_bitmap};
 
 uint8_t U_0x25_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x25_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x25_base_character_set_bitmap};
 
 uint8_t U_0x26_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0};
 Character U_0x26_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x26_base_character_set_bitmap};
 
 uint8_t U_0x27_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x27_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x27_base_character_set_bitmap};
 
 uint8_t U_0x28_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0};
 Character U_0x28_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x28_base_character_set_bitmap};
 
 uint8_t U_0x29_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0};
 Character U_0x29_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x29_base_character_set_bitmap};
 
 uint8_t U_0x2a_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x2a_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x2a_base_character_set_bitmap};
 
 uint8_t U_0x2b_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x2b_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x2b_base_character_set_bitmap};
 
 uint8_t U_0x2c_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0};
 Character U_0x2c_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x2c_base_character_set_bitmap};
 
 uint8_t U_0x2d_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x2d_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x2d_base_character_set_bitmap};
 
 uint8_t U_0x2e_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0};
 Character U_0x2e_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x2e_base_character_set_bitmap};
 
 uint8_t U_0x2f_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x2f_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x2f_base_character_set_bitmap};
 
 uint8_t U_0x3a_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0};
 Character U_0x3a_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x3a_base_character_set_bitmap};
 
 uint8_t U_0x3b_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0};
 Character U_0x3b_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x3b_base_character_set_bitmap};
 
 uint8_t U_0x3c_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0};
 Character U_0x3c_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x3c_base_character_set_bitmap};
 
 uint8_t U_0x3d_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x3d_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x3d_base_character_set_bitmap};
 
 uint8_t U_0x3e_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x3e_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x3e_base_character_set_bitmap};
 
 uint8_t U_0x3f_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x3f_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x3f_base_character_set_bitmap};
 
 uint8_t U_0x40_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x40_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x40_base_character_set_bitmap};
 
 uint8_t U_0x5b_base_character_set_bitmap[3 * 10] = {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0};
 Character U_0x5b_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0x5b_base_character_set_bitmap};
 
 uint8_t U_0x5c_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x5c_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x5c_base_character_set_bitmap};
 
 uint8_t U_0x5d_base_character_set_bitmap[3 * 10] = {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0};
 Character U_0x5d_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0x5d_base_character_set_bitmap};
 
 uint8_t U_0x5e_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x5e_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x5e_base_character_set_bitmap};
 
 uint8_t U_0x5f_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0x5f_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0x5f_base_character_set_bitmap};
 
 uint8_t U_0x60_base_character_set_bitmap[2 * 10] = {0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x60_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0x60_base_character_set_bitmap};
 
 uint8_t U_0x7b_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0};
 Character U_0x7b_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x7b_base_character_set_bitmap};
 
 uint8_t U_0x7c_base_character_set_bitmap[1 * 10] = {0, 0, 1, 1, 1, 1, 1, 1, 1, 0};
 Character U_0x7c_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 1,
     .height = 10,
     .bitmap = U_0x7c_base_character_set_bitmap};
 
 uint8_t U_0x7d_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0x7d_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x7d_base_character_set_bitmap};
 
 uint8_t U_0x7e_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 Character U_0x7e_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0x7e_base_character_set_bitmap};
 
 uint8_t U_0xe1_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0xe1_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xe1_base_character_set_bitmap};
 
 uint8_t U_0xe9_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0xe9_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xe9_base_character_set_bitmap};
 
 uint8_t U_0xed_base_character_set_bitmap[2 * 10] = {0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0};
 Character U_0xed_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 2,
     .height = 10,
     .bitmap = U_0xed_base_character_set_bitmap};
 
 uint8_t U_0xf1_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0};
 Character U_0xf1_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0xf1_base_character_set_bitmap};
 
 uint8_t U_0xf3_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0xf3_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xf3_base_character_set_bitmap};
 
 uint8_t U_0xfa_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0};
 Character U_0xfa_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0xfa_base_character_set_bitmap};
 
 uint8_t U_0xfc_base_character_set_bitmap[4 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0};
 Character U_0xfc_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 4,
     .height = 10,
     .bitmap = U_0xfc_base_character_set_bitmap};
 
 uint8_t U_0xc1_base_character_set_bitmap[5 * 10] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0xc1_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xc1_base_character_set_bitmap};
 
 uint8_t U_0xc9_base_character_set_bitmap[5 * 10] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
 Character U_0xc9_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xc9_base_character_set_bitmap};
 
 uint8_t U_0xcd_base_character_set_bitmap[3 * 10] = {0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0};
 Character U_0xcd_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0xcd_base_character_set_bitmap};
 
 uint8_t U_0xd1_base_character_set_bitmap[5 * 10] = {0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 Character U_0xd1_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xd1_base_character_set_bitmap};
 
 uint8_t U_0xd3_base_character_set_bitmap[5 * 10] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0xd3_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xd3_base_character_set_bitmap};
 
 uint8_t U_0xda_base_character_set_bitmap[5 * 10] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0xda_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xda_base_character_set_bitmap};
 
 uint8_t U_0xdc_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0xdc_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xdc_base_character_set_bitmap};
 
 uint8_t U_0xa1_base_character_set_bitmap[3 * 10] = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0};
 Character U_0xa1_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 3,
     .height = 10,
     .bitmap = U_0xa1_base_character_set_bitmap};
 
 uint8_t U_0xbf_base_character_set_bitmap[5 * 10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 Character U_0xbf_base_character_set = {
-    .flags = 0x0,
+    .character_type = CHAR_TYPE_NORMAL,
     .width = 5,
     .height = 10,
     .bitmap = U_0xbf_base_character_set_bitmap};

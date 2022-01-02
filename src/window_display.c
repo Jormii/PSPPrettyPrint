@@ -1,12 +1,15 @@
+#include <stdio.h>
+
 #include "log_error.h"
 #include "screen_buffer.h"
 #include "window_display.h"
 
 #define BUFFER_INDEX(x, y) (x + y * SCREEN_WIDTH)
 
+void draw_word(const wchar_t *word, const rgb *color, size_t length, FetchCharacter font, Cursor *cursor);
 void draw_character(const Character *character, rgb color, const Cursor *cursor);
-void force_print(const wchar_t *word, const uint32_t *word_color, FetchCharacter font, size_t word_length, const Margin *margin, Cursor *cursor);
-uint8_t print_word(const wchar_t *word, const uint32_t *word_color, size_t word_length, FetchCharacter font, const Character *divider, const Margin *margin, Cursor *cursor);
+
+void modify_cursor(Cursor *cursor, const Character *character, const Window *window);
 
 void clear_margin(const Margin *margin)
 {
@@ -16,7 +19,7 @@ void clear_margin(const Margin *margin)
     {
         for (uint32_t i = 0; i < width; ++i)
         {
-            draw_buffer[buffer_index + i] = ' ';
+            draw_buffer[buffer_index + i] = 0;
         }
         buffer_index += SCREEN_WIDTH;
     }
@@ -27,128 +30,151 @@ void display_window(const Window *window)
     clear_margin(&(window->margin));
 
     Cursor cursor = {.x = window->margin.left, .y = window->margin.top};
-    uint32_t width = window->margin.right - window->margin.left + 1;
+    uint32_t margin_width = window->margin.right - window->margin.left + 1;
 
-    size_t word_length = 0;
+    uint32_t word_length = 0;
+    uint32_t word_length_pixels = 0;
     uint8_t can_keep_printing = 1;
-    for (size_t i = window->buffer_index; i <= window->length && can_keep_printing; ++i) // "i <="" to reach the final '\0' character
+    for (size_t i = window->buffer_index; i < window->length && can_keep_printing; ++i)
     {
-        if (word_length == width)
+#if 0
+        if (word_length_pixels > margin_width)
         {
-            // A word so long it would need more than a line to be printed. Force print
-            uint32_t offset = window->margin.right - cursor.x + 1;
-            force_print(
-                window->buffer + i - offset, window->color_buffer + i - offset, window->font,
-                offset,
-                &(window->margin), &cursor);
+            // A word so long it would need more than one line to be printed
+            wchar_t *word = window->buffer + i - word_length;
+            rgb *color = window->color_buffer + i - word_length;
 
-            word_length -= offset;
-            can_keep_printing = cursor.y <= window->margin.bottom;
+            uint8_t keep_force_printing = 1;
+            while (keep_force_printing)
+            {
+                const Character *character = window->font(*word);
+                uint32_t expected_cursor_x = cursor.x + character->width;
+
+                if (expected_cursor_x > window->margin.right)
+                {
+                    keep_force_printing = 0;
+
+                    cursor.x = window->margin.left;
+                    cursor.y += character->height;
+                }
+                else
+                {
+                    draw_word(word, color, 1, window->font, &cursor);
+                    cursor.x = expected_cursor_x + 1;
+
+                    word_length -= 1;
+                    word_length_pixels -= character->width - 1;
+                    word += 1;
+                    color += 1;
+                }
+            }
         }
+#endif
 
         wchar_t unicode = window->buffer[i];
-        const Character *c = window->font(unicode);
-        if (c == 0)
+        const Character *character = window->font(unicode);
+        if (character == 0)
         {
             log_error_and_idle(L"Character with unicode %d can't be represented", unicode);
         }
 
-        if ((c->flags & NEW_LINE) || (c->flags & SPACE) || (unicode == 0))
+        switch (character->character_type)
         {
-            can_keep_printing = print_word(
-                window->buffer + i - word_length, window->color_buffer + i - word_length, word_length, window->font,
-                c,
-                &(window->margin), &cursor);
+        case CHAR_TYPE_NORMAL:
+        case CHAR_TYPE_TAB:
+        case CHAR_TYPE_RETURN_CARRIAGE:
+            word_length += 1;
+            word_length_pixels += character->width + 1;
+            break;
+        case CHAR_TYPE_NEW_LINE:
+        case CHAR_TYPE_WHITESPACE:
+        {
+            uint32_t expected_cursor_x = cursor.x + word_length_pixels - 1; // -1 to "remove" the pixel
+                                                                            // between characters
+            if (expected_cursor_x > window->margin.right)
+            {
+                cursor.x = window->margin.left;
+                cursor.y += character->height;
+            }
+        }
+            draw_word(
+                window->buffer + i - word_length,
+                window->color_buffer + i - word_length,
+                word_length,
+                window->font,
+                &cursor);
+
+            modify_cursor(&cursor, character, window);
+
             word_length = 0;
-        }
-        else
-        {
-            word_length += c->width;
+            word_length_pixels = 0;
+            can_keep_printing = cursor.y <= window->margin.bottom;
+            break;
+        default:
+            log_error_and_idle(L"Unknown character type %u linked to unicode %d", character->character_type, unicode);
         }
     }
 }
 
-void force_print(const wchar_t *word, const uint32_t *word_color, FetchCharacter font, size_t word_length, const Margin *margin, Cursor *cursor)
+void draw_word(const wchar_t *word, const rgb *color, size_t length, FetchCharacter font, Cursor *cursor)
 {
-    for (size_t src = 0; src < word_length; ++src)
+    for (size_t i = 0; i < length; ++i)
     {
-        wchar_t unicode = word[src];
+        wchar_t unicode = word[i];
         const Character *c = font(unicode);
-        if (c == 0)
+        if (c != 0)
         {
-            log_error_and_idle(L"Can't represent character with unicode %d", unicode);
+            draw_character(c, color[i], cursor);
+            cursor->x += c->width + ((i + 1) != length); // Add width and an additional pixel if not the last character
         }
     }
-
-    // Update variables
-    cursor->x = margin->left;
-    cursor->y += 1;
-}
-
-uint8_t print_word(const wchar_t *word, const uint32_t *word_color, size_t word_length, FetchCharacter font, const Character *divider, const Margin *margin, Cursor *cursor)
-{
-    // Update cursor
-    uint32_t new_cursor_x = cursor->x + word_length;
-    if (new_cursor_x > margin->right)
-    {
-        cursor->x = margin->left;
-        cursor->y += divider->height + 1;
-
-        new_cursor_x = cursor->x + word_length;
-    }
-
-    if (cursor->y > margin->bottom)
-    {
-        // Reached last line -> Can't print
-        return 0;
-    }
-
-    // Update buffer and final cursor update
-    for (size_t src = 0; src < word_length; ++src)
-    {
-        wchar_t unicode = word[src];
-        const Character *c = font(unicode);
-        if (c == 0)
-        {
-            log_error_and_idle(L"Can't represent character with unicode %d", unicode);
-        }
-
-        draw_character(c, word_color[src], cursor);
-    }
-
-    cursor->x = new_cursor_x;
-
-    // Additional updates depending on divider
-    if (divider->flags & NEW_LINE)
-    {
-        // Writes a whitespace instead of a new line because that would trigger a jump when using the PSPSDK
-        cursor->x = margin->left;
-        cursor->y += divider->height + 1;
-    }
-
-    if (divider->flags & SPACE)
-    {
-        cursor->x += divider->width;
-    }
-
-    return 1;
 }
 
 void draw_character(const Character *character, rgb color, const Cursor *cursor)
 {
-    size_t index = BUFFER_INDEX(cursor->x, cursor->y);
     size_t bitmap_index = 0;
+    size_t buffer_index = BUFFER_INDEX(cursor->x, cursor->y);
+
     for (uint32_t y = 0; y < character->height && y < SCREEN_HEIGHT; ++y)
     {
         for (uint32_t x = 0; x < character->width; ++x)
         {
-            if (index >= BUFFER_SIZE) {
+            if (buffer_index < 0 || buffer_index >= BUFFER_SIZE)
+            {
                 return;
             }
-            
-            draw_buffer[index + x] = character->bitmap[bitmap_index];
+
+            if (character->bitmap[bitmap_index])
+            {
+                draw_buffer[buffer_index + x] = color;
+            }
+
             bitmap_index += 1;
         }
-        index += SCREEN_WIDTH;
+
+        buffer_index += SCREEN_WIDTH;
+    }
+}
+
+void modify_cursor(Cursor *cursor, const Character *character, const Window *window)
+{
+    switch (character->character_type)
+    {
+    case CHAR_TYPE_NEW_LINE:
+        cursor->x = window->margin.left;
+        cursor->y += character->height;
+        break;
+    case CHAR_TYPE_WHITESPACE:
+        cursor->x += character->width;
+        if (cursor->x > window->margin.right)
+        {
+            cursor->x = window->margin.left;
+            cursor->y += character->height;
+        }
+        break;
+    case CHAR_TYPE_NORMAL:
+    case CHAR_TYPE_TAB:
+    case CHAR_TYPE_RETURN_CARRIAGE:
+        break;
     }
 }

@@ -13,7 +13,7 @@ void log_error_and_idle(const wchar_t *format, ...)
     va_list vararg;
     va_start(vararg, format);
 
-    int length = 1 + vswprintf(NULL, 0, format, vararg);
+    int length = 1 + vfwprintf(stdout, format, vararg);
     va_end(vararg);
 
     va_start(vararg, format);

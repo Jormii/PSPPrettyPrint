@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 import matplotlib.pyplot as plt
 
 
@@ -28,15 +30,20 @@ class FontCreation:
 
     class Character:
 
-        def __init__(self, character, width, height, new_line=False, tab=False, return_carriage=False, space=False):
+        class CharacterType(IntEnum):
+            CHAR_TYPE_NORMAL = 0,
+            CHAR_TYPE_NEW_LINE = 1,
+            CHAR_TYPE_TAB = 2,
+            CHAR_TYPE_RETURN_CARRIAGE = 3,
+            CHAR_TYPE_WHITESPACE = 4
+
+        def __init__(self, character, width, height, character_type=CharacterType.CHAR_TYPE_NORMAL):
             self.character = character
             self.unicode = ord(character)
             self.unicode_hex = hex(self.unicode)
             self.width = width
             self.height = height
-            self.space = space
-            self.flags = (new_line << 3) + (tab << 2) + \
-                (return_carriage << 1) + space
+            self.character_type = character_type
 
         def __repr__(self):
             return "{} ({} / {}). (w, h) = ({}, {})".format(
@@ -154,13 +161,13 @@ class FontCreation:
         definition_template = """
         uint8_t U_{unicode_hex}_{name_low}_bitmap[{width}*{height}] = {bitmap};
         Character U_{unicode_hex}_{name_low} = {{
-            .flags={flags},
+            .character_type={character_type},
             .width={width},
             .height={height},
             .bitmap=U_{unicode_hex}_{name_low}_bitmap}};""".format(
             unicode_hex=character.unicode_hex,
             name_low=self.name_low,
-            flags=hex(character.flags),
+            character_type=character.character_type.name,
             width=character.width,
             height=character.height,
             bitmap=bitmap_array_str
@@ -199,9 +206,12 @@ if __name__ == "__main__":
 
         # Control characters
         FontCreation.Character("\0", width, height),
-        FontCreation.Character("\t", width, height, tab=True),
-        FontCreation.Character("\n", width, height, new_line=True),
-        FontCreation.Character("\r", width, height, return_carriage=True),
+        FontCreation.Character(
+            "\t", width, height, character_type=FontCreation.Character.CharacterType.CHAR_TYPE_TAB),
+        FontCreation.Character(
+            "\n", width, height, character_type=FontCreation.Character.CharacterType.CHAR_TYPE_NEW_LINE),
+        FontCreation.Character(
+            "\r", width, height, character_type=FontCreation.Character.CharacterType.CHAR_TYPE_RETURN_CARRIAGE),
 
         # Numbers
         FontCreation.Character("0", common_w, height),
@@ -272,7 +282,8 @@ if __name__ == "__main__":
         FontCreation.Character("Z", 4, height),
 
         # Symbols
-        FontCreation.Character(" ", common_w, height, space=True),
+        FontCreation.Character(
+            chr(32), common_w, height, character_type=FontCreation.Character.CharacterType.CHAR_TYPE_WHITESPACE),
         FontCreation.Character("!", 3, height),
         FontCreation.Character("\"", common_w, height),
         FontCreation.Character("#", common_w, height),

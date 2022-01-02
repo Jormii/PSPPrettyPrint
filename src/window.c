@@ -73,10 +73,10 @@ void printf_to_window(Window *window, const wchar_t *format, ...)
     va_list vararg;
     va_start(vararg, format);
 
-    int length = 1 + vswprintf(NULL, 0, format, vararg);
+    int length = 1 + vfwprintf(stdout, format, vararg); // TODO: Required for now. Find a better way
     va_end(vararg);
 
-    wchar_t *string = (wchar_t *)malloc(length);
+    wchar_t *string = (wchar_t *)malloc(length * sizeof(wchar_t));
     va_start(vararg, format);
     vswprintf(string, length, format, vararg);
     va_end(vararg);
@@ -111,6 +111,8 @@ void scroll_window(Window *window, ScrollDirection direction)
 
 void update_window_stats(Window *window)
 {
+// TODO
+#if 0
     const Margin *margin = &(window->margin);
     uint32_t width = margin->right - margin->left + 1;
     Cursor cursor = {.x = margin->left, .y = margin->top};
@@ -156,10 +158,12 @@ void update_window_stats(Window *window)
             word_length += fonts_c->width + 1;
         }
     }
+#endif
 }
 
 void window_stats_special_character_found(Window *window, size_t i, size_t word_length, const Character *divider, Cursor *cursor, size_t *stats_buffer_index)
 {
+#if 0
     const Margin *margin = &(window->margin);
     int32_t new_cursor_x = cursor->x + word_length;
     if (new_cursor_x > margin->right)
@@ -193,16 +197,21 @@ void window_stats_special_character_found(Window *window, size_t i, size_t word_
     {
         cursor->x += divider->width;
     }
+#endif
 }
 
 void buffer_overflow_clear(Window *window)
 {
     window->length = 0;
     window->line = 0;
+    
+    window->buffer_index = 0;
+    window->lines_occupied = 1;
 }
 
 void buffer_overflow_clear_first_line(Window *window)
 {
+#if 0
     // Determine what region of the buffer to clear
     window->line = 1;
     update_window_stats(window);
@@ -230,10 +239,12 @@ void buffer_overflow_clear_first_line(Window *window)
         window->line -= 1;
     }
     update_window_stats(window);
+#endif
 }
 
 void buffer_overflow_clear_first_paragraph(Window *window)
 {
+#if 0
     // Determine when the second paragraph starts
     size_t i = 0;
     for (; i < window->length; ++i)
@@ -277,4 +288,5 @@ void buffer_overflow_clear_first_paragraph(Window *window)
     size_t min = (window->line <= diff) ? window->line : diff;
     window->line -= min; // Update line in a way that ensures current content isn't displaced if possible
     update_window_stats(window);
+#endif
 }

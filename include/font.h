@@ -4,14 +4,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define NEW_LINE 0x8
-#define TAB 0x4
-#define RETURN_CARRIAGE 0x2
-#define SPACE 0x1
+#define CHAR_TYPE_NORMAL 0
+#define CHAR_TYPE_NEW_LINE 1
+#define CHAR_TYPE_TAB 2
+#define CHAR_TYPE_RETURN_CARRIAGE 3 // TODO: Implement
+#define CHAR_TYPE_WHITESPACE 4
 
 typedef struct Character_st
 {
-    uint8_t flags;
+    uint8_t character_type;
     uint8_t width;
     uint8_t height;
     uint8_t *bitmap;
