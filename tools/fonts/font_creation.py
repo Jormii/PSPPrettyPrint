@@ -28,13 +28,15 @@ class FontCreation:
 
     class Character:
 
-        def __init__(self, character, width, height, new_line=False, tab=False, return_carriage=False):
+        def __init__(self, character, width, height, new_line=False, tab=False, return_carriage=False, space=False):
             self.character = character
             self.unicode = ord(character)
             self.unicode_hex = hex(self.unicode)
             self.width = width
             self.height = height
-            self.flags = (new_line << 2) + (tab << 1) + return_carriage
+            self.space = space
+            self.flags = (new_line << 3) + (tab << 2) + \
+                (return_carriage << 1) + space
 
         def __repr__(self):
             return "{} ({} / {}). (w, h) = ({}, {})".format(
@@ -78,9 +80,9 @@ class FontCreation:
         #ifndef {name_up}_FONT_H
         #define {name_up}_FONT_H
 
-        #include "character.h"
+        #include "font.h"
 
-        const Character *get_{name_low}_character(uint32_t unicode);
+        const Character *get_{name_low}_character(wchar_t unicode);
 
         #endif""".format(
             name_up=self.name_up,
@@ -98,7 +100,7 @@ class FontCreation:
         font_source_template = """#include "{name_low}_font.h"
         {definitions}
 
-        const Character *get_{name_low}_character(uint32_t unicode)
+        const Character *get_{name_low}_character(wchar_t unicode)
         {{
             Character *c = {default};
             switch (unicode) {{{switch_cases}
@@ -176,7 +178,7 @@ class FontCreation:
         # Update
         definitions += definition_template
         if index == self.unknown_character_index:
-            default = "&U_{unicode_hex}_{name_low};".format(
+            default = "&U_{unicode_hex}_{name_low}".format(
                 unicode_hex=character.unicode_hex,
                 name_low=self.name_low)
         else:
@@ -270,7 +272,7 @@ if __name__ == "__main__":
         FontCreation.Character("Z", 4, height),
 
         # Symbols
-        FontCreation.Character(" ", common_w, height),
+        FontCreation.Character(" ", common_w, height, space=True),
         FontCreation.Character("!", 3, height),
         FontCreation.Character("\"", common_w, height),
         FontCreation.Character("#", common_w, height),

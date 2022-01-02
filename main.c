@@ -5,17 +5,40 @@
 #include <pspdisplay.h>
 
 #include "rgb.h"
-#include "screen.h"
 #include "window.h"
 #include "callbacks.h"
-#include "constants.h"
 #include "scrollbar.h"
+#include "screen_buffer.h"
+#include "window_display.h"
 
 PSP_MODULE_INFO("PrettyPrint", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
 
+void initialize()
+{
+    setup_callbacks();
+    initialize_screen_buffer();
+}
+
 int main()
 {
+    wchar_t *str = L"Canción";
+    Margin m = {
+        .left = 0,
+        .right = SCREEN_WIDTH - 1,
+        .top = 0,
+        .bottom = SCREEN_HEIGHT - 1};
+
+    Window w = create_window(&m, 512);
+    print_to_window(&w, str);
+
+    while (running())
+    {
+        // display_window(&w);
+        swap_buffers();
+    }
+
+#if 0
     // Create windows
     Margin lefts_margin = {
         .left = 1,
@@ -36,7 +59,7 @@ int main()
 
     // Initialize and attach windows
     setup_callbacks();
-    initialize_screen();
+    initialize_window_display();
 
     // Print
     print_to_window(&left, "This text belongs to the window located on the left side of the screen\n\n");
@@ -96,16 +119,17 @@ int main()
         }
 
         // Update screen
-        update_window(&left);
+        display_window(&left);
         if (update_right)
         {
-            update_window(&right);
+            display_window(&right);
         }
         display_scrollbar(&lefts_scrollbar);
 
         update_screen();
         sceDisplayWaitVblankStart();
     }
+#endif
 
     sceKernelExitGame();
     return 0;

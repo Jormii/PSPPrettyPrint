@@ -5,10 +5,10 @@
 
 typedef struct Margin_st
 {
-    uint8_t left;
-    uint8_t right;
-    uint8_t top;
-    uint8_t bottom;
+    uint32_t left;
+    uint32_t right;
+    uint32_t top;
+    uint32_t bottom;
 } Margin;
 
 #endif

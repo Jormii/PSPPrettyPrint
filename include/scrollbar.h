@@ -5,10 +5,8 @@
 
 typedef struct Scrollbar_st
 {
-    const uint8_t x;
+    const uint32_t x;
     const Window *window;
 } Scrollbar;
-
-void display_scrollbar(const Scrollbar *scrollbar);
 
 #endif

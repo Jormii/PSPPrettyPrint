@@ -5,8 +5,8 @@
 
 typedef struct Cursor_st
 {
-    uint8_t x;
-    uint8_t y;
+    uint32_t x;
+    uint32_t y;
 } Cursor;
 
 #endif
