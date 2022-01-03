@@ -3,10 +3,12 @@
 
 #include <stdint.h>
 
+typedef uint32_t cursor_t;
+
 typedef struct Cursor_st
 {
-    uint32_t x;
-    uint32_t y;
+    cursor_t x;
+    cursor_t y;
 } Cursor;
 
 #endif

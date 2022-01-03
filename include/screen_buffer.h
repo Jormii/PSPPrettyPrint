@@ -8,11 +8,11 @@
 #define BUFFER_WIDTH 512
 #define BUFFER_SIZE (BUFFER_WIDTH * SCREEN_HEIGHT)
 
-rgb *display_buffer;
-rgb *draw_buffer;
+rgb_t *display_buffer;
+rgb_t *draw_buffer;
 
 void initialize_screen_buffer();
-void clear_color_buffer(rgb color);
+void clear_color_buffer(rgb_t color);
 void swap_buffers();
 
 #endif

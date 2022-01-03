@@ -6,8 +6,8 @@
 
 #define BUFFER_INDEX(x, y) (x + y * BUFFER_WIDTH)
 
-void draw_word(const Window *window, const wchar_t *word, const rgb *color, size_t length, Cursor *cursor);
-void draw_character(const Character *character, rgb color, const Margin *margin, const Cursor *cursor);
+void draw_word(const Window *window, const wchar_t *word, const rgb_t *color, size_t length, Cursor *cursor);
+void draw_character(const Character *character, rgb_t color, const Margin *margin, const Cursor *cursor);
 
 void force_draw(const Window *window, size_t starting_index, size_t *word_length, size_t *word_length_pixels, Cursor *cursor);
 void modify_cursor(const Window *window, Cursor *cursor, const Character *character);
@@ -91,7 +91,7 @@ void display_window(const Window *window)
     }
 }
 
-void draw_word(const Window *window, const wchar_t *word, const rgb *color, size_t length, Cursor *cursor)
+void draw_word(const Window *window, const wchar_t *word, const rgb_t *color, size_t length, Cursor *cursor)
 {
     for (size_t i = 0; i < length; ++i)
     {
@@ -105,7 +105,7 @@ void draw_word(const Window *window, const wchar_t *word, const rgb *color, size
     }
 }
 
-void draw_character(const Character *character, rgb color, const Margin *margin, const Cursor *cursor)
+void draw_character(const Character *character, rgb_t color, const Margin *margin, const Cursor *cursor)
 {
     size_t bitmap_index = 0;
     size_t buffer_index = BUFFER_INDEX(cursor->x, cursor->y);
@@ -133,7 +133,7 @@ void draw_character(const Character *character, rgb color, const Margin *margin,
 void force_draw(const Window *window, size_t starting_index, size_t *word_length, size_t *word_length_pixels, Cursor *cursor)
 {
     wchar_t *word = window->buffer + starting_index;
-    rgb *color = window->color_buffer + starting_index;
+    rgb_t *color = window->color_buffer + starting_index;
 
     uint8_t keep_force_drawing = 1;
     size_t iterations = *word_length;

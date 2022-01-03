@@ -7,7 +7,7 @@
 #include "base_character_set_font.h"
 
 void update_window_stats(Window *window);
-void window_stats_special_character_found(Window *window, size_t i, size_t word_length, const Character *divider, Cursor *cursor, size_t *stats_buffer_index);
+void update_stats_according_to_divider(Window *window, Cursor *cursor, const Character *character, size_t character_index);
 
 Window create_window(const Margin *margin, size_t max_length)
 {
@@ -24,7 +24,7 @@ Window create_window(const Margin *margin, size_t max_length)
     w.length = 0;
     w.max_length = max_length;
     w.buffer = (wchar_t *)malloc((max_length + 1) * sizeof(wchar_t));
-    w.color_buffer = (rgb *)malloc((max_length + 1) * sizeof(rgb));
+    w.color_buffer = (rgb_t *)malloc((max_length + 1) * sizeof(rgb_t));
     w.overflow_behaviour = buffer_overflow_clear;
 
     w.buffer[0] = L'\0';
@@ -42,6 +42,7 @@ Window create_window(const Margin *margin, size_t max_length)
 
     w.buffer_index = 0;
     w.lines_occupied = 1; // An empty line is still considered to occupy 1 line
+    w.lines_displayed = 1;
 
     return w;
 }
@@ -96,10 +97,8 @@ void scroll_window(Window *window, ScrollDirection direction)
 {
     if (direction == SCROLL_DOWN)
     {
-        const Margin *m = &(window->margin);
         size_t lines_under_cursor = window->lines_occupied - window->line;
-        uint8_t height = m->bottom - m->top + 1;
-        if (lines_under_cursor > height)
+        if (lines_under_cursor > window->lines_displayed)
         {
             window->line += 1;
             update_window_stats(window);
@@ -117,93 +116,136 @@ void scroll_window(Window *window, ScrollDirection direction)
 
 void update_window_stats(Window *window)
 {
-// TODO
-#if 0
-    const Margin *margin = &(window->margin);
-    uint32_t width = margin->right - margin->left + 1;
-    Cursor cursor = {.x = margin->left, .y = margin->top};
-
-    const Character *new_line_char = window->font(L'\n');
-    uint8_t y_offset = 1 + (new_line_char != 0) ? new_line_char->height : 10;
+    Cursor cursor = {.x = window->margin.left, .y = window->margin.top};
+    uint32_t margin_width = window->margin.right - window->margin.left + 1;
 
     window->buffer_index = 0;
-    window->lines_occupied = 0;
+    window->lines_occupied = 1;
+    window->lines_displayed = 1;
 
     size_t word_length = 0;
+    size_t word_length_pixels = 0;
     for (size_t i = 0; i < window->length; ++i)
     {
-        if (word_length > width)
+        if (word_length_pixels > margin_width)
         {
-            // A word so long it would need more than a line to be printed. Consider it a new line
-            uint32_t offset = margin->right - cursor.x + 1;
+            // A word so long it would need more than one line to be printed
+            wchar_t *word = window->buffer + i - word_length;
 
-            cursor.x = margin->left;
-            cursor.y += y_offset;
-            window->lines_occupied += 1;
-            if (window->lines_occupied <= window->line)
+            uint32_t keep_force_checking = 1;
+            size_t iterations = word_length;
+            for (size_t i = 0; i < iterations && keep_force_checking; ++i)
             {
-                window->buffer_index = i; // Character that caused the "overflow"
-            }
+                const Character *character = window->font(*word);
+                uint32_t expected_cursor_x = cursor.x + character->width;
 
-            word_length -= offset;
+                if (expected_cursor_x > window->margin.right)
+                {
+                    keep_force_checking = 0;
+
+                    cursor.x = window->margin.left;
+                    cursor.y += character->height;
+
+                    window->lines_occupied += 1;
+                    if (window->lines_occupied <= window->line)
+                    {
+                        window->buffer_index = i; // Character that caused the "overflow"
+                    }
+                    if (cursor.y <= window->margin.bottom)
+                    {
+                        window->lines_displayed += 1;
+                    }
+                }
+                else
+                {
+                    cursor.x += character->width + 1;
+
+                    word_length -= 1;
+                    word_length_pixels -= character->width + 1;
+                    word += 1;
+                }
+            }
         }
 
-        wchar_t c = window->buffer[i];
-        const Character *fonts_c = window->font(c);
-        if (fonts_c == 0)
+        wchar_t unicode = window->buffer[i];
+        const Character *character = window->font(unicode);
+        if (character == 0)
         {
             log_error_and_idle(L"Character with unicode %d can't be represented", window->buffer[i]);
         }
 
-        if ((fonts_c->flags & NEW_LINE) || (fonts_c->flags & SPACE))
+        switch (character->character_type)
         {
-            window_stats_special_character_found(window, i, word_length, fonts_c, &cursor, &window->buffer_index);
+        case CHAR_TYPE_NORMAL:
+        case CHAR_TYPE_TAB:
+        case CHAR_TYPE_RETURN_CARRIAGE:
+            word_length += 1;
+            word_length_pixels += character->width + 1;
+            break;
+        case CHAR_TYPE_NEW_LINE:
+        case CHAR_TYPE_WHITESPACE:
+        case CHAR_TYPE_NULL:
+        {
+            int32_t expected_cursor_x = cursor.x + word_length_pixels - 1; // -1 to "remove" the pixel
+                                                                           // between characters
+            if (expected_cursor_x > window->margin.right)
+            {
+                cursor.x = window->margin.left;
+                cursor.y += character->height;
+
+                window->lines_occupied += 1;
+                if (window->lines_occupied <= window->line)
+                {
+                    window->buffer_index = i - word_length; // Beginning of the word
+                }
+                if (cursor.y <= window->margin.bottom)
+                {
+                    window->lines_displayed += 1;
+                }
+
+                const wchar_t *word = window->buffer + i - word_length;
+                for (size_t k = 0; k < word_length; ++k)
+                {
+                    const Character *character_k = window->font(word[k]);
+                    cursor.x += character_k->width + ((k + 1) != word_length); // Add width and an additional pixel if not the last character
+                }
+            }
+
+            word_length = 0;
+            word_length_pixels = 0;
+            update_stats_according_to_divider(window, &cursor, character, i);
+            break;
         }
-        else
-        {
-            word_length += fonts_c->width + 1;
         }
     }
-#endif
 }
 
-void window_stats_special_character_found(Window *window, size_t i, size_t word_length, const Character *divider, Cursor *cursor, size_t *stats_buffer_index)
+void update_stats_according_to_divider(Window *window, Cursor *cursor, const Character *character, size_t character_index)
 {
-#if 0
-    const Margin *margin = &(window->margin);
-    int32_t new_cursor_x = cursor->x + word_length;
-    if (new_cursor_x > margin->right)
+    switch (character->character_type)
     {
-        cursor->x = margin->left;
-        cursor->y += divider->height;
-        window->lines_occupied += 1;
-
-        new_cursor_x = cursor->x + word_length;
-        if (window->lines_occupied <= window->line)
-        {
-            *stats_buffer_index = i - word_length; // Beginning of the word
-        }
-    }
-
-    cursor->x = new_cursor_x;
-
-    // Additional modifications depending on character found
-    if (divider->flags & NEW_LINE)
-    {
-        cursor->x = margin->left;
-        cursor->y += divider->height + 1;
+    case CHAR_TYPE_NORMAL:
+    case CHAR_TYPE_TAB:
+    case CHAR_TYPE_RETURN_CARRIAGE:
+    case CHAR_TYPE_NULL:
+        break;
+    case CHAR_TYPE_NEW_LINE:
+        cursor->x = window->margin.left;
+        cursor->y += character->height + 1;
         window->lines_occupied += 1;
         if (window->lines_occupied <= window->line)
         {
-            *stats_buffer_index = i + 1; // Next character after newline
+            window->buffer_index = character_index + 1; // Next character after newline;
         }
+        if (cursor->y <= window->margin.bottom)
+        {
+            window->lines_displayed += 1;
+        }
+        break;
+    case CHAR_TYPE_WHITESPACE:
+        cursor->x += character->width;
+        break;
     }
-
-    if (divider->flags & SPACE)
-    {
-        cursor->x += divider->width;
-    }
-#endif
 }
 
 void buffer_overflow_clear(Window *window)
@@ -213,10 +255,12 @@ void buffer_overflow_clear(Window *window)
 
     window->buffer_index = 0;
     window->lines_occupied = 1;
+    window->lines_displayed = 1;
 }
 
 void buffer_overflow_clear_first_line(Window *window)
 {
+    // TODO
 #if 0
     // Determine what region of the buffer to clear
     window->line = 1;
@@ -250,6 +294,7 @@ void buffer_overflow_clear_first_line(Window *window)
 
 void buffer_overflow_clear_first_paragraph(Window *window)
 {
+    // TODO
 #if 0
     // Determine when the second paragraph starts
     size_t i = 0;

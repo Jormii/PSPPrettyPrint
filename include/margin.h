@@ -3,12 +3,14 @@
 
 #include <stdint.h>
 
+typedef uint32_t margin_t;
+
 typedef struct Margin_st
 {
-    uint32_t left;
-    uint32_t right;
-    uint32_t top;
-    uint32_t bottom;
+    margin_t left;
+    margin_t right;
+    margin_t top;
+    margin_t bottom;
 } Margin;
 
 #endif

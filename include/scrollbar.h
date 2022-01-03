@@ -5,7 +5,7 @@
 
 typedef struct Scrollbar_st
 {
-    const uint32_t x;
+    const margin_t x;
     const Window *window;
 } Scrollbar;
 
