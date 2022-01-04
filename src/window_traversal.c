@@ -11,9 +11,9 @@ void traverse_window(const Window *window, const WindowTraversalInput *wt_input)
         .word_length_pixels = 0};
 
     uint32_t margin_width = margin->right - margin->left + 1;
-    for (size_t i = wt_input->starting_index; i <= window->length && wt.continue_traversing; ++i)
+    for (size_t i = wt_input->starting_index; i <= window->buffer.length && wt.continue_traversing; ++i)
     {
-        wchar_t codepoint = window->buffer[i];
+        wchar_t codepoint = window->buffer.text[i];
         const Character *character = window->font(codepoint);
         if (character == 0)
         {

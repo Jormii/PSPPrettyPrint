@@ -89,8 +89,8 @@ void draw_character(const Character *character, rgb_t color, const Margin *margi
 void force_draw_word_cb(const Window *window, WindowTraversal *wt, const Character *character, size_t character_index)
 {
     size_t offset = character_index - wt->word_length;
-    wchar_t *word = window->buffer + offset;
-    rgb_t *color = window->color_buffer + offset;
+    wchar_t *word = window->buffer.text + offset;
+    rgb_t *color = window->buffer.color + offset;
 
     boolean_t keep_force_drawing = TRUE;
     size_t iterations = wt->word_length;
@@ -140,7 +140,7 @@ void draw_word_cb(const Window *window, WindowTraversal *wt, const Character *ch
     // Draw
     size_t offset = character_index - wt->word_length;
     draw_word(
-        window, window->buffer + offset, window->color_buffer + offset,
+        window, window->buffer.text + offset, window->buffer.color + offset,
         wt->word_length, &(wt->cursor));
 
     // Update variables

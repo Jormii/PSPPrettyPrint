@@ -6,6 +6,7 @@
 #include "log_error.h"
 #include "screen_buffer.h"
 #include "window_display.h"
+#include "base_character_set_font.h"
 
 void log_error_and_idle(const wchar_t *format, ...)
 {
@@ -22,18 +23,19 @@ void log_error_and_idle(const wchar_t *format, ...)
     va_end(vararg);
 
     // Print error message
-    Margin m = {
-        .left = 0,
-        .right = SCREEN_WIDTH - 1,
-        .top = 0,
-        .bottom = SCREEN_HEIGHT - 1};
-    Window w = create_window(&m, length);
+    Window window;
+    window.margin.left = 0;
+    window.margin.right = SCREEN_WIDTH - 1;
+    window.margin.top = 0;
+    window.margin.bottom = SCREEN_HEIGHT - 1;
+    create_text_buffer(length, &(window.buffer));
+    window.font = get_base_character_set_character;
 
-    print_to_window(&w, string);
-    display_window(&w);
+    print_to_buffer(&(window.buffer), 0xFFFFFFFF, string);
+    display_window(&window);
     free(string);
 
-    // Loop infinitely
+    // Loop indefinitely
     while (1)
     {
         ;

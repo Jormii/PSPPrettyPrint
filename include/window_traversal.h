@@ -1,6 +1,7 @@
 #ifndef WINDOW_TRAVERSAL_H
 #define WINDOW_TRAVERSAL_H
 
+#include "cursor.h"
 #include "window.h"
 
 typedef struct WindowTraversal_st

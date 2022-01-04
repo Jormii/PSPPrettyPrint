@@ -13,6 +13,7 @@
 #include "screen_buffer.h"
 #include "window_display.h"
 #include "log_error.h"
+#include "base_character_set_font.h"
 
 PSP_MODULE_INFO("PrettyPrint", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
@@ -28,79 +29,50 @@ int main()
     initialize();
 
     // Create windows
-    Margin lefts_margin = {
-        .left = 1,
-        .right = (SCREEN_WIDTH >> 1) - 1,
-        .top = 1,
-        .bottom = (SCREEN_HEIGHT >> 1)};
-    Window left = create_window(&lefts_margin, 2048);
+    Window left;
+    left.margin.left = 1;
+    left.margin.right = (SCREEN_WIDTH >> 1) - 10;
+    left.margin.top = 1;
+    left.margin.bottom = (SCREEN_HEIGHT >> 1);
+    create_text_buffer(2048, &(left.buffer));
+    left.font = get_base_character_set_character;
 
-    Margin rights_margin = {
-        .left = (SCREEN_WIDTH >> 1) + 1,
-        .right = SCREEN_WIDTH - 2,
-        .top = 1,
-        .bottom = SCREEN_HEIGHT - 2};
-    Window right = create_window(&rights_margin, 2048);
-
-    // Create scrollbar
-    Scrollbar lefts_scrollbar = {.window = &left, .x = lefts_margin.right + 1};
+    Window right;
+    right.margin.left = (SCREEN_WIDTH >> 1) + 10;
+    right.margin.right = SCREEN_WIDTH - 2;
+    right.margin.top = 1;
+    right.margin.bottom = SCREEN_HEIGHT - 2;
+    create_text_buffer(2048, &(right.buffer));
+    right.font = get_base_character_set_character;
 
     // Print
-    print_to_window(&left, L"This text belongs to the window located on the left side of the screen\n\n");
-    print_to_window(&right, L"However, this text is being written to the window on the right.\nIt is also slightly longer\n\n");
-
-    SceCtrlData ctrl_data;
-    sceCtrlSetSamplingCycle(0);
-    sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
+    print_to_buffer(&(left.buffer), 0xFFFFFFFF, L"This text belongs to the window located on the left side of the screen\n\n");
+    print_to_buffer(&(right.buffer), 0xFFFFFFFF, L"However, this text is being written to the window on the right.\nIt is also slightly longer\n\n");
 
     int i = 0;
     int j = 0;
-    int update_right = 1;
     while (running())
     {
         // Print new data
         i = (i + 1) % 7;
-        left.color = RGB(255 * (i & 1), 255 * (i & 2), 255 * (i & 4));
-        if (left.color == 0)
+        rgb_t left_color = RGB(255 * (i & 1), 255 * (i & 2), 255 * (i & 4));
+        if (left_color == 0)
         {
-            left.color = RGB(122, 122, 122);
+            left_color = RGB(122, 122, 122);
         }
-        printf_to_window(&left, L"%d", i);
+        printf_to_buffer(&(left.buffer), left_color, L"%d", i);
 
         j = (j + 1) % 5;
-        right.color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
-        if (right.color == 0)
+        rgb_t right_color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
+        if (right_color == 0)
         {
-            right.color = RGB(122, 122, 122);
+            right_color = RGB(122, 122, 122);
         }
-        if (update_right)
-        {
-            printf_to_window(&right, L"%d", j);
-        }
-
-        // Read input
-        sceCtrlReadBufferPositive(&ctrl_data, 1);
-        if (ctrl_data.Buttons & PSP_CTRL_UP)
-        {
-            scroll_window(&left, SCROLL_UP);
-        }
-        else if (ctrl_data.Buttons & PSP_CTRL_DOWN)
-        {
-            scroll_window(&left, SCROLL_DOWN);
-        }
-        else if (ctrl_data.Buttons & PSP_CTRL_SQUARE)
-        {
-            clear_margin(&(right.margin));
-            update_right = !update_right;
-        }
+        printf_to_buffer(&(right.buffer), right_color, L"%d", j);
 
         // Update screen
         display_window(&left);
-        if (update_right)
-        {
-            display_window(&right);
-        }
-        display_scrollbar(&lefts_scrollbar);
+        display_window(&right);
 
         swap_buffers();
         sceDisplayWaitVblankStart();
