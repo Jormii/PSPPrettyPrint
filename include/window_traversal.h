@@ -11,7 +11,7 @@ typedef struct WindowTraversal_st
     size_t word_length_pixels;
 } WindowTraversal;
 
-typedef void (*WindowTraversalCallback)(Window *window, WindowTraversal *wt, const Character *character, size_t character_index);
+typedef void (*WindowTraversalCallback)(const Window *window, WindowTraversal *wt, const Character *character, size_t character_index);
 typedef struct WindowTraversalInput_st
 {
     size_t starting_index;
@@ -24,6 +24,6 @@ typedef struct WindowTraversalInput_st
     WindowTraversalCallback null_character_cb;
 } WindowTraversalInput;
 
-void traverse_window(Window *window, const WindowTraversalInput *wt_input);
+void traverse_window(const Window *window, const WindowTraversalInput *wt_input);
 
 #endif

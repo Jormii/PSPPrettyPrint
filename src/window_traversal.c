@@ -1,7 +1,7 @@
 #include "log_error.h"
 #include "window_traversal.h"
 
-void traverse_window(Window *window, const WindowTraversalInput *wt_input)
+void traverse_window(const Window *window, const WindowTraversalInput *wt_input)
 {
     const Margin *margin = &(window->margin);
     WindowTraversal wt = {
