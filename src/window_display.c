@@ -36,7 +36,7 @@ void display_window(const Window *window)
     uint32_t word_length = 0;
     uint32_t word_length_pixels = 0;
     uint8_t can_keep_printing = 1;
-    for (size_t i = window->buffer_index; i <= window->length && can_keep_printing; ++i) // "<= length" to reach final '\0'
+    for (size_t i = 0; i <= window->length && can_keep_printing; ++i) // "<= length" to reach final '\0'
     {
         if (word_length_pixels > margin_width)
         {

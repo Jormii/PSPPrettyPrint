@@ -24,16 +24,10 @@ typedef struct Window_st
     size_t max_length;
     wchar_t *buffer;
     rgb_t *color_buffer;
-    BufferOverflow overflow_behaviour;
 
-    size_t line;
     rgb_t color;
     Margin margin;
     FetchCharacter font;
-
-    size_t buffer_index;
-    size_t lines_occupied;
-    size_t lines_displayed;
 } Window;
 
 Window create_window(const Margin *margin, size_t max_length);
