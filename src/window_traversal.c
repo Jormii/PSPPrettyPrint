@@ -1,7 +1,7 @@
 #include "log_error.h"
 #include "window_traversal.h"
 
-void traverse_window(const Window *window, const WindowTraversalInput *wt_input)
+void traverse_window(const Window *window, const WindowTraversalInput *wt_input, Cursor *out_cursor)
 {
     const Margin *margin = &(window->margin);
     WindowTraversal wt = {
@@ -10,7 +10,7 @@ void traverse_window(const Window *window, const WindowTraversalInput *wt_input)
         .word_length = 0,
         .word_length_pixels = 0};
 
-    margin_t margin_width = margin->right - margin->left + 1;
+    screen_t margin_width = margin->right - margin->left + 1;
     for (size_t i = wt_input->starting_index; i <= window->buffer.length && wt.continue_traversing; ++i)
     {
         wchar_t codepoint = window->buffer.text[i];
@@ -58,5 +58,11 @@ void traverse_window(const Window *window, const WindowTraversalInput *wt_input)
         {
             cb(window, &wt, character, i);
         }
+    }
+
+    if (out_cursor != 0)
+    {
+        out_cursor->x = wt.cursor.x;
+        out_cursor->y = wt.cursor.y;
     }
 }

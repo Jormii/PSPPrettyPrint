@@ -25,6 +25,6 @@ typedef struct WindowTraversalInput_st
     WindowTraversalCallback null_character_cb;
 } WindowTraversalInput;
 
-void traverse_window(const Window *window, const WindowTraversalInput *wt_input);
+void traverse_window(const Window *window, const WindowTraversalInput *wt_input, Cursor *out_cursor);
 
 #endif

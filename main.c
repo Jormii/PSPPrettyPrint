@@ -29,6 +29,27 @@ void initialize()
     sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 }
 
+void draw_border(const Margin *margin)
+{
+    for (screen_t x = margin->left - 1; x <= margin->right + 1; ++x)
+    {
+        size_t index_top = x + (margin->top - 1) * BUFFER_WIDTH;
+        size_t index_bottom = x + (margin->bottom + 1) * BUFFER_WIDTH;
+
+        draw_buffer[index_top] = 0x88888888;
+        draw_buffer[index_bottom] = 0x88888888;
+    }
+
+    for (screen_t y = margin->top - 1; y <= margin->bottom + 1; ++y)
+    {
+        size_t index_left = (margin->left - 1) + y * BUFFER_WIDTH;
+        size_t index_right = (margin->right + 1) + y * BUFFER_WIDTH;
+
+        draw_buffer[index_left] = 0x88888888;
+        draw_buffer[index_right] = 0x88888888;
+    }
+}
+
 int main()
 {
     initialize();
@@ -65,12 +86,11 @@ int main()
         sceCtrlReadBufferPositive(&ctrl_data, 1);
         if (ctrl_data.Buttons & PSP_CTRL_DOWN)
         {
-            left.scroll_amount += 3;
+            scroll_window(&left, 1, SCROLL_DOWN);
         }
         else if (ctrl_data.Buttons & PSP_CTRL_UP)
         {
-            cursor_t min = (3 < left.scroll_amount) ? 3 : left.scroll_amount;
-            left.scroll_amount -= min;
+            scroll_window(&left, 1, SCROLL_UP);
         }
 
         // Print new data
@@ -90,24 +110,7 @@ int main()
         }
         printf_to_buffer(&(right.buffer), right_color, L"%d", j);
 
-        // Draw a border around the left window
-        for (cursor_t x = left.margin.left - 1; x <= left.margin.right + 1; ++x)
-        {
-            size_t index_top = x + (left.margin.top - 1) * BUFFER_WIDTH;
-            size_t index_bottom = x + (left.margin.bottom + 1) * BUFFER_WIDTH;
-
-            draw_buffer[index_top] = 0x88888888;
-            draw_buffer[index_bottom] = 0x88888888;
-        }
-
-        for (cursor_t y = left.margin.top - 1; y <= left.margin.bottom + 1; ++y)
-        {
-            size_t index_left = (left.margin.left - 1) + y * BUFFER_WIDTH;
-            size_t index_right = (left.margin.right + 1) + y * BUFFER_WIDTH;
-
-            draw_buffer[index_left] = 0x88888888;
-            draw_buffer[index_right] = 0x88888888;
-        }
+        draw_border(&(left.margin)); // Draw a border around the left window
 
         // Update screen
         display_window(&left);
