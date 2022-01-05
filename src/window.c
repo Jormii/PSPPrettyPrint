@@ -7,42 +7,19 @@ void scroll_force_new_line_cb(const Window *window, WindowTraversal *wt, const C
 void scroll_advance_cb(const Window *window, WindowTraversal *wt, const Character *character, size_t character_index);
 void scroll_full_word_cb(const Window *window, WindowTraversal *wt, const Character *character, size_t character_index);
 
-void scroll_window(Window *window, screen_t amount, ScrollDirection direction)
+void get_window_cursor(const Window *window, Cursor *out_cursor)
 {
-    if (direction == SCROLL_DOWN)
-    {
-        Cursor cursor_out;
-        WindowTraversalInput wt_input = {
-            .starting_index = 0,
-            .wide_word_cb = scroll_force_new_line_cb,
-            .normal_character_cb = scroll_advance_cb,
-            .new_line_cb = scroll_full_word_cb,
-            .tab_cb = scroll_advance_cb,
-            .return_carriage_cb = scroll_advance_cb,
-            .whitespace_cb = scroll_full_word_cb,
-            .null_character_cb = scroll_full_word_cb};
+    WindowTraversalInput wt_input = {
+        .starting_index = 0,
+        .wide_word_cb = scroll_force_new_line_cb,
+        .normal_character_cb = scroll_advance_cb,
+        .new_line_cb = scroll_full_word_cb,
+        .tab_cb = scroll_advance_cb,
+        .return_carriage_cb = scroll_advance_cb,
+        .whitespace_cb = scroll_full_word_cb,
+        .null_character_cb = scroll_full_word_cb};
 
-        traverse_window(window, &wt_input, &cursor_out);
-
-        // TODO: Sort of awful
-        const Character *null_character = window->font(L'\0');
-        if (null_character == 0)
-        {
-            log_error_and_idle(L"Character set can't represent null characters");
-        }
-
-        screen_t total = cursor_out.y + null_character->height - 1;
-        screen_t margin_height = window->margin.bottom - window->margin.top + 1;
-        if (total > margin_height)
-        {
-            screen_t under_bottom_margin = total - margin_height;
-            window->scroll_amount += MIN(amount, under_bottom_margin);
-        }
-    }
-    else if (direction == SCROLL_UP)
-    {
-        window->scroll_amount -= MIN(amount, window->scroll_amount);
-    }
+    traverse_window(window, &wt_input, out_cursor);
 }
 
 void scroll_force_new_line_cb(const Window *window, WindowTraversal *wt, const Character *character, size_t character_index)
@@ -116,38 +93,57 @@ void scroll_full_word_cb(const Window *window, WindowTraversal *wt, const Charac
     }
 }
 
+void scroll_window(Window *window, screen_t amount, ScrollDirection direction)
+{
+    if (direction == SCROLL_DOWN)
+    {
+        Cursor cursor;
+        get_window_cursor(window, &cursor);
+
+        // TODO: It's sort of awful to ask for a character everytime
+        const Character *null_character = window->font(L'\0');
+        if (null_character == 0)
+        {
+            log_error_and_idle(L"Character set can't represent null characters");
+        }
+
+        screen_t total = cursor.y + null_character->height - 1;
+        screen_t margin_height = window->margin.bottom - window->margin.top + 1;
+        if (total > margin_height)
+        {
+            screen_t under_bottom_margin = total - margin_height;
+            window->scroll_amount += MIN(amount, under_bottom_margin);
+        }
+    }
+    else if (direction == SCROLL_UP)
+    {
+        window->scroll_amount -= MIN(amount, window->scroll_amount);
+    }
+}
+
 void window_buffer_overflow_cb(TextBuffer *buffer, void *void_window)
 {
     Window *window = (Window *)void_window;
 
     // We need to visit the buffer twice
     // TODO: Could be improved?
-    WindowTraversalInput wt_input = {
-        .starting_index = 0,
-        .wide_word_cb = scroll_force_new_line_cb,
-        .normal_character_cb = scroll_advance_cb,
-        .new_line_cb = scroll_full_word_cb,
-        .tab_cb = scroll_advance_cb,
-        .return_carriage_cb = scroll_advance_cb,
-        .whitespace_cb = scroll_full_word_cb,
-        .null_character_cb = scroll_full_word_cb};
 
-    // Get current cursor
+    // Get cursor before overflow
     Cursor previous_cursor;
-    traverse_window(window, &wt_input, &previous_cursor);
+    get_window_cursor(window, &previous_cursor);
 
     // Clear buffer
     clear_text_buffer_first_paragraph(buffer, 0); // TODO: Other options
 
-    // Get cursor after clear
+    // Get cursor after resolving overflow
     Cursor updated_cursor;
-    traverse_window(window, &wt_input, &updated_cursor);
+    get_window_cursor(window, &updated_cursor);
 
     // Update scroll according to values
     screen_t diff = previous_cursor.y - updated_cursor.y;
     if (diff < 0)
     {
-        log_error_and_idle(L"Impossible diff value in window_buffer_overflow_cb");
+        log_error_and_idle(L"Impossible diff value in \"window_buffer_overflow_cb\"");
     }
 
     scroll_window(window, diff, SCROLL_UP);
