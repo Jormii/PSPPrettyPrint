@@ -33,7 +33,7 @@ void log_error_and_idle(const wchar_t *format, ...)
     window.font = get_base_character_set_character;
     window.scroll_amount = 0;
 
-    print_to_buffer(&(window.buffer), 0xFFFFFFFF, string);
+    print_to_text_buffer(&(window.buffer), 0xFFFFFFFF, string);
     display_window(&window);
     swap_buffers();
     free(string);

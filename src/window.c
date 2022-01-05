@@ -115,3 +115,40 @@ void scroll_full_word_cb(const Window *window, WindowTraversal *wt, const Charac
                            character->character_type);
     }
 }
+
+void window_buffer_overflow_cb(TextBuffer *buffer, void *void_window)
+{
+    Window *window = (Window *)void_window;
+
+    // We need to visit the buffer twice
+    // TODO: Could be improved?
+    WindowTraversalInput wt_input = {
+        .starting_index = 0,
+        .wide_word_cb = scroll_force_new_line_cb,
+        .normal_character_cb = scroll_advance_cb,
+        .new_line_cb = scroll_full_word_cb,
+        .tab_cb = scroll_advance_cb,
+        .return_carriage_cb = scroll_advance_cb,
+        .whitespace_cb = scroll_full_word_cb,
+        .null_character_cb = scroll_full_word_cb};
+
+    // Get current cursor
+    Cursor previous_cursor;
+    traverse_window(window, &wt_input, &previous_cursor);
+
+    // Clear buffer
+    clear_text_buffer_first_paragraph(buffer, 0); // TODO: Other options
+
+    // Get cursor after clear
+    Cursor updated_cursor;
+    traverse_window(window, &wt_input, &updated_cursor);
+
+    // Update scroll according to values
+    screen_t diff = previous_cursor.y - updated_cursor.y;
+    if (diff < 0)
+    {
+        log_error_and_idle(L"Impossible diff value in window_buffer_overflow_cb");
+    }
+
+    scroll_window(window, diff, SCROLL_UP);
+}

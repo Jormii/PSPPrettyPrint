@@ -61,6 +61,8 @@ int main()
     left.margin.top = 1;
     left.margin.bottom = (SCREEN_HEIGHT >> 1);
     create_text_buffer(2048, &(left.buffer));
+    left.buffer.overflow_cb = window_buffer_overflow_cb;
+    left.buffer.ptr_cb = (void *)&(left);
     left.font = get_base_character_set_character;
     left.scroll_amount = 0;
 
@@ -70,12 +72,14 @@ int main()
     right.margin.top = 1;
     right.margin.bottom = SCREEN_HEIGHT - 2;
     create_text_buffer(2048, &(right.buffer));
+    right.buffer.overflow_cb = window_buffer_overflow_cb;
+    right.buffer.ptr_cb = (void *)&(right);
     right.font = get_base_character_set_character;
     right.scroll_amount = 0;
 
     // Print
-    print_to_buffer(&(left.buffer), 0xFFFFFFFF, L"This text belongs to the window located on the left side of the screen\n\n");
-    print_to_buffer(&(right.buffer), 0xFFFFFFFF, L"However, this text is being written to the window on the right.\nIt is also slightly longer\n\n");
+    print_to_text_buffer(&(left.buffer), 0xFFFFFFFF, L"This text belongs to the window located on the left side of the screen\n\n");
+    print_to_text_buffer(&(right.buffer), 0xFFFFFFFF, L"However, this text is being written to the window on the right.\nIt is also slightly longer\n\n");
 
     int i = 0;
     int j = 0;
@@ -100,7 +104,7 @@ int main()
         {
             left_color = RGB(122, 122, 122);
         }
-        printf_to_buffer(&(left.buffer), left_color, L"%d", i);
+        printf_to_text_buffer(&(left.buffer), left_color, L"%d", i);
 
         j = (j + 1) % 5;
         rgb_t right_color = RGB(255 * (j & 1), 255 * (j & 2), 255 * (j & 4));
@@ -108,7 +112,7 @@ int main()
         {
             right_color = RGB(122, 122, 122);
         }
-        printf_to_buffer(&(right.buffer), right_color, L"%d", j);
+        printf_to_text_buffer(&(right.buffer), right_color, L"%d", j);
 
         draw_border(&(left.margin)); // Draw a border around the left window
 

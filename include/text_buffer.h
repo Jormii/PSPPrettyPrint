@@ -6,7 +6,7 @@
 #include "rgb.h"
 
 struct TextBuffer_st;
-typedef void (*BufferOverflow)(struct TextBuffer_st *buffer);
+typedef void (*BufferOverflow)(struct TextBuffer_st *buffer, void *ptr); // TODO: Pointer is very ugly
 
 typedef struct TextBuffer_st
 {
@@ -16,14 +16,15 @@ typedef struct TextBuffer_st
     rgb_t *color;
 
     BufferOverflow overflow_cb;
+    void *ptr_cb;
 } TextBuffer;
 
 void create_text_buffer(size_t length, TextBuffer *out_buffer);
 
-void print_to_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string);
-void printf_to_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...);
+void print_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string);
+void printf_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...);
 
-void overflow_cb_clear(TextBuffer *text_buffer);
-void overflow_cb_clear_first_paragraph(TextBuffer *text_buffer);
+void clear_text_buffer(TextBuffer *buffer, void *null_ptr);
+void clear_text_buffer_first_paragraph(TextBuffer *buffer, void *null_ptr);
 
 #endif

@@ -13,20 +13,21 @@ void create_text_buffer(size_t length, TextBuffer *out_buffer)
     out_buffer->max_length = length;
     out_buffer->text = (wchar_t *)malloc(real_size * sizeof(wchar_t));
     out_buffer->color = (rgb_t *)malloc(real_size * sizeof(rgb_t));
-    out_buffer->overflow_cb = overflow_cb_clear;
+    out_buffer->overflow_cb = clear_text_buffer;
+    out_buffer->ptr_cb = 0;
 
     out_buffer->text[0] = L'\0';
     out_buffer->color[0] = 0;
 }
 
-void print_to_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string)
+void print_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string)
 {
     size_t length = wcslen(string);
     size_t final_length = buffer->length + length;
     if (final_length >= buffer->max_length)
     {
         // Handle overflow
-        buffer->overflow_cb(buffer);
+        buffer->overflow_cb(buffer, buffer->ptr_cb);
         final_length = buffer->length + length;
     }
 
@@ -43,7 +44,7 @@ void print_to_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string)
     buffer->color[buffer->length] = 0;
 }
 
-void printf_to_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...)
+void printf_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...)
 {
     // Format string
     va_list vararg;
@@ -59,19 +60,49 @@ void printf_to_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ..
     va_end(vararg);
 
     // Print
-    print_to_buffer(buffer, color, string);
+    print_to_text_buffer(buffer, color, string);
     free(string);
 }
 
-void overflow_cb_clear(TextBuffer *text_buffer)
+void clear_text_buffer(TextBuffer *buffer, void *null_ptr)
 {
-    text_buffer->length = 0;
-    text_buffer->text[0] = L'\0';
-    text_buffer->color[0] = 0;
+    buffer->length = 0;
+    buffer->text[0] = L'\0';
+    buffer->color[0] = 0;
 }
 
-void overflow_cb_clear_first_paragraph(TextBuffer *text_buffer)
+void clear_text_buffer_first_paragraph(TextBuffer *buffer, void *null_ptr)
 {
-    // TODO
-    overflow_cb_clear(text_buffer);
+    // Determine when the second paragraph starts
+    size_t end = 0;
+    while (end < buffer->length && buffer->text[end] != L'\n')
+    {
+        end += 1;
+    }
+
+    // Consider the possibility of consecutive '\n' characters
+    while (end < buffer->length && buffer->text[end] == L'\n')
+    {
+        end += 1;
+    }
+
+    if (end == buffer->length)
+    {
+        // The content in the buffer is a single paragraph
+        clear_text_buffer(buffer, buffer->ptr_cb);
+        return;
+    }
+
+    // Update buffer
+    for (size_t src = end, dst = 0;
+         src < buffer->length;
+         ++src, ++dst)
+    {
+        buffer->text[dst] = buffer->text[src];
+        buffer->color[dst] = buffer->color[src];
+    }
+
+    buffer->length -= end;
+    buffer->text[buffer->length] = L'\0';
+    buffer->color[buffer->length] = 0;
 }

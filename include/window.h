@@ -21,4 +21,6 @@ typedef struct Window_st
 
 void scroll_window(Window *window, screen_t amount, ScrollDirection direction);
 
+void window_buffer_overflow_cb(TextBuffer *buffer, void *void_window);
+
 #endif
