@@ -16,11 +16,11 @@ void draw_word_cb(const Window *window, WindowTraversal *wt, const Character *ch
 
 void clear_margin(const Margin *margin)
 {
-    uint32_t width = margin->right - margin->left + 1;
+    cursor_t width = margin->right - margin->left + 1;
     size_t buffer_index = BUFFER_INDEX(margin->left, margin->top);
-    for (uint32_t y = margin->top; y <= margin->bottom; ++y)
+    for (cursor_t y = margin->top; y <= margin->bottom; ++y)
     {
-        for (uint32_t i = 0; i < width; ++i)
+        for (cursor_t i = 0; i < width; ++i)
         {
             draw_buffer[buffer_index + i] = 0;
         }
@@ -50,29 +50,38 @@ void draw_word(const Window *window, const wchar_t *word, const rgb_t *color, si
     for (size_t i = 0; i < length; ++i)
     {
         wchar_t unicode = word[i];
-        const Character *c = window->font(unicode);
-        if (c != 0)
+        const Character *character = window->font(unicode);
+        if (character != 0)
         {
-            draw_character(c, color[i], &(window->margin), cursor);
-            cursor->x += c->width + ((i + 1) != length); // Add width and an additional pixel if not the last character
+
+            boolean_t draw = (cursor->y + character->height) > window->margin.top;
+            if (draw)
+            {
+                draw_character(character, color[i], &(window->margin), cursor);
+            }
+            cursor->x += character->width + ((i + 1) != length); // Add width and an additional pixel if not the last character
         }
     }
 }
 
 void draw_character(const Character *character, rgb_t color, const Margin *margin, const Cursor *cursor)
 {
+    cursor_t y0 = cursor->y;
+    cursor_t yf = cursor->y + character->height;
     size_t bitmap_index = 0;
-    size_t buffer_index = BUFFER_INDEX(cursor->x, cursor->y);
 
-    uint32_t y0 = cursor->y;
-    y0 = (y0 < margin->top) ? margin->top : y0;
+    if (y0 < margin->top)
+    {
+        bitmap_index = (margin->top - y0) * character->width;
+        y0 = margin->top;
+    }
 
-    uint32_t yf = cursor->y + character->height;
     yf = (yf > margin->bottom) ? margin->bottom : yf;
 
-    for (uint32_t y = y0; y < yf; ++y)
+    size_t buffer_index = BUFFER_INDEX(cursor->x, y0);
+    for (cursor_t y = y0; y < yf; ++y)
     {
-        for (uint32_t x = 0; x < character->width; ++x)
+        for (cursor_t x = 0; x < character->width; ++x)
         {
             if (character->bitmap[bitmap_index])
             {

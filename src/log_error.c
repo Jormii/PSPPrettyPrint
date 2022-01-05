@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "window.h"
+#include "callbacks.h"
 #include "log_error.h"
 #include "screen_buffer.h"
 #include "window_display.h"
@@ -30,13 +31,15 @@ void log_error_and_idle(const wchar_t *format, ...)
     window.margin.bottom = SCREEN_HEIGHT - 1;
     create_text_buffer(length, &(window.buffer));
     window.font = get_base_character_set_character;
+    window.scroll_amount = 0;
 
     print_to_buffer(&(window.buffer), 0xFFFFFFFF, string);
     display_window(&window);
+    swap_buffers();
     free(string);
 
     // Loop indefinitely
-    while (1)
+    while (running())
     {
         ;
     }

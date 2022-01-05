@@ -6,11 +6,11 @@ void traverse_window(const Window *window, const WindowTraversalInput *wt_input)
     const Margin *margin = &(window->margin);
     WindowTraversal wt = {
         .continue_traversing = 1,
-        .cursor = {.x = margin->left, .y = margin->top},
+        .cursor = {.x = margin->left, .y = margin->top - window->scroll_amount},
         .word_length = 0,
         .word_length_pixels = 0};
 
-    uint32_t margin_width = margin->right - margin->left + 1;
+    margin_t margin_width = margin->right - margin->left + 1;
     for (size_t i = wt_input->starting_index; i <= window->buffer.length && wt.continue_traversing; ++i)
     {
         wchar_t codepoint = window->buffer.text[i];

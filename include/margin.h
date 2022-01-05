@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef uint32_t margin_t;
+typedef int16_t margin_t;
 
 typedef struct Margin_st
 {

@@ -10,6 +10,7 @@ typedef struct Window_st
     Margin margin;
     TextBuffer buffer;
     FetchCharacter font;
+    margin_t scroll_amount;
 } Window;
 
 #endif
