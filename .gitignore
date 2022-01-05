@@ -1,6 +1,9 @@
+**/tmp/
 **/.vscode/
+**/__pycache__/
 
 *.o
+*.png
 
 *.PBP
 *.elf

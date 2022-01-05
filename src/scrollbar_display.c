@@ -1,9 +1,9 @@
 #include "scrollbar.h"
 
-#include "screen.h"
-
 void display_scrollbar(const Scrollbar *scrollbar)
 {
+// TODO
+#if 0
     // Clear printing target
     Margin margin = {
         .left = scrollbar->x,
@@ -43,4 +43,5 @@ void display_scrollbar(const Scrollbar *scrollbar)
     {
         print_character('+', 0xFFFFFFFF, scrollbar->x, y);
     }
+#endif
 }

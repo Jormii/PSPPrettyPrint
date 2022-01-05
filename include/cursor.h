@@ -1,12 +1,13 @@
 #ifndef CURSOR_H
 #define CURSOR_H
 
-#include <stdint.h>
+#include "types.h"
 
+// 2D screen cursor
 typedef struct Cursor_st
 {
-    uint8_t x;
-    uint8_t y;
+    screen_t x; // X component. Bounds: [0, 480]
+    screen_t y; // Y component. Bounds: [0, 272]
 } Cursor;
 
 #endif
