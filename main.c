@@ -77,6 +77,12 @@ int main()
     right.font = get_base_character_set_character;
     right.scroll_amount = 0;
 
+    // Create scrollbar
+    Scrollbar scrollbar = {
+        .margin_left = left.margin.right + 5,
+        .margin_right = left.margin.right + 10,
+        .window = &left};
+
     // Print
     print_to_text_buffer(&(left.buffer), 0xFFFFFFFF, L"This text belongs to the window located on the left side of the screen\n\n");
     print_to_text_buffer(&(right.buffer), 0xFFFFFFFF, L"However, this text is being written to the window on the right.\nIt is also slightly longer\n\n");
@@ -119,6 +125,7 @@ int main()
         // Update screen
         display_window(&left);
         display_window(&right);
+        display_scrollbar(&scrollbar);
 
         swap_buffers();
         sceDisplayWaitVblankStart();

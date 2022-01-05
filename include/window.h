@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include "font.h"
+#include "cursor.h"
 #include "margin.h"
 #include "text_buffer.h"
 
@@ -11,7 +12,7 @@ typedef enum ScrollDirection_en
     SCROLL_DOWN = 1
 } ScrollDirection;
 
-typedef struct Window_st
+typedef struct Window
 {
     Margin margin;
     TextBuffer buffer;
@@ -19,6 +20,7 @@ typedef struct Window_st
     screen_t scroll_amount;
 } Window;
 
+void get_window_cursor(const Window *window, Cursor *out_cursor);
 void scroll_window(Window *window, screen_t amount, ScrollDirection direction);
 
 void window_buffer_overflow_cb(TextBuffer *buffer, void *void_window);
