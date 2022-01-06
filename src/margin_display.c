@@ -6,8 +6,6 @@
 
 void display_margin(const Margin *margin, rgb_t color)
 {
-    // TODO: Improve by not calling TEXT_BUFFER_INDEX in the loops
-
     // Clamp to the screen bounds
     screen_t x0 = MAX(margin->left - 1, 0);
     screen_t xf = MIN(margin->right + 1, SCREEN_WIDTH - 1);
@@ -15,17 +13,27 @@ void display_margin(const Margin *margin, rgb_t color)
     screen_t yf = MIN(margin->bottom + 1, SCREEN_HEIGHT - 1);
 
     // Top and bottom margins
+    size_t top_index = TEXT_BUFFER_INDEX(x0, y0);
+    size_t bottom_index = TEXT_BUFFER_INDEX(x0, yf);
     for (screen_t x = x0; x <= xf; ++x)
     {
-        draw_buffer[TEXT_BUFFER_INDEX(x, y0)] = color;
-        draw_buffer[TEXT_BUFFER_INDEX(x, yf)] = color;
+        draw_buffer[top_index] = color;
+        draw_buffer[bottom_index] = color;
+
+        top_index += 1;
+        bottom_index += 1;
     }
 
     // Left and right margins
+    size_t left_index = TEXT_BUFFER_INDEX(x0, y0);
+    size_t right_index = TEXT_BUFFER_INDEX(xf, y0);
     for (screen_t y = y0; y <= yf; ++y)
     {
-        draw_buffer[TEXT_BUFFER_INDEX(x0, y)] = color;
-        draw_buffer[TEXT_BUFFER_INDEX(xf, y)] = color;
+        draw_buffer[left_index] = color;
+        draw_buffer[right_index] = color;
+
+        left_index += BUFFER_WIDTH;
+        right_index += BUFFER_WIDTH;
     }
 }
 

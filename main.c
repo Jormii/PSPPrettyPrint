@@ -95,6 +95,7 @@ int main()
         tb_printf(&(right.buffer), right_color, L"%d", j);
 
         display_margin(&(left.margin), 0x88888888);
+        display_margin(&(right.margin), 0x88FF8888);
 
         // Update screen
         display_window(&left);
