@@ -15,7 +15,7 @@ void wt_traverse(const Window *window, const WindowTraversalInput *wt_input,
     for (size_t i = 0; i <= window->buffer.length && wt.continue_traversing; ++i)
     {
         wchar_t code_point = window->buffer.text[i];
-        const Character *character = window->font(code_point);
+        const Character *character = window->font->mapping(code_point);
         if (character == 0)
         {
             log_error_and_idle(L"Character with code_point %d can't be represented",

@@ -1,0 +1,9 @@
+#ifndef {name_up}_FONT_H
+#define {name_up}_FONT_H
+
+#include "font.h"
+
+Font {name_low}_font;
+const Character *get_{name_low}_character(wchar_t code_point);
+
+#endif

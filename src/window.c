@@ -27,6 +27,7 @@ void w_get_cursor(const Window *window, Cursor *out_cursor)
 void scroll_force_new_line_cb(const Window *window, WindowTraversal *wt,
                               const Character *character, size_t character_index)
 {
+    const Font *font = window->font;
     wchar_t *word = window->buffer.text + character_index - wt->word_length;
 
     // Check characters until the word reaches the right margin
@@ -34,14 +35,14 @@ void scroll_force_new_line_cb(const Window *window, WindowTraversal *wt,
     size_t iterations = wt->word_length;
     for (size_t i = 0; i < iterations && keep_force_checking; ++i)
     {
-        const Character *character_to_check = window->font(*word);
+        const Character *character_to_check = font->mapping(*word);
         screen_t expected_cursor_x = wt->cursor.x + character_to_check->width;
         if (expected_cursor_x > window->margin.right)
         {
             keep_force_checking = FALSE;
 
             wt->cursor.x = window->margin.left;
-            wt->cursor.y += character->height + 1;
+            wt->cursor.y += font->height + 1;
         }
         else
         {
@@ -64,13 +65,15 @@ void scroll_advance_cb(const Window *window, WindowTraversal *wt,
 void scroll_full_word_cb(const Window *window, WindowTraversal *wt,
                          const Character *character, size_t character_index)
 {
+    const Font *font = window->font;
+
     // Check if word fits the current line
     // -1 to remove the pixel between characters added in "scroll_advance_cb"
     screen_t expected_cursor_x = wt->cursor.x + wt->word_length_pixels - 1;
     if (expected_cursor_x > window->margin.right)
     {
         wt->cursor.x = window->margin.left;
-        wt->cursor.y += character->height + 1;
+        wt->cursor.y += font->height + 1;
     }
 
     // Update variables
@@ -82,14 +85,14 @@ void scroll_full_word_cb(const Window *window, WindowTraversal *wt,
     {
     case CHAR_TYPE_NEW_LINE:
         wt->cursor.x = window->margin.left;
-        wt->cursor.y += character->height + 1;
+        wt->cursor.y += font->height + 1;
         break;
     case CHAR_TYPE_WHITESPACE:
         wt->cursor.x += character->width;
         if (wt->cursor.x > window->margin.right)
         {
             wt->cursor.x = window->margin.left;
-            wt->cursor.y += character->height + 1;
+            wt->cursor.y += font->height + 1;
         }
         break;
     case CHAR_TYPE_NULL:
@@ -107,17 +110,10 @@ void w_scroll(Window *window, screen_t amount, ScrollDirection direction)
         Cursor cursor;
         w_get_cursor(window, &cursor);
 
-        // TODO: It's sort of awful to ask for a character everytime
-        const Character *null_character = window->font(L'\0');
-        if (null_character == 0)
-        {
-            log_error_and_idle(L"Character set can't represent null characters");
-        }
-
         // Text can be scrolled if the cursor lies below the bottom margin
         // The cursor returned is placed in the top left corner of the next
         // character that should be printed
-        screen_t total = cursor.y + null_character->height - 1;
+        screen_t total = cursor.y + window->font->height - 1;
         screen_t margin_height = window->margin.bottom - window->margin.top + 1;
         if (total > margin_height)
         {

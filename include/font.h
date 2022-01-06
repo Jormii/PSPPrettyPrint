@@ -24,10 +24,15 @@ typedef struct Character
 {
     uint8_t character_type;
     uint8_t width;
-    uint8_t height;
     boolean_t *bitmap;
 } Character;
 
 typedef const Character *(*FetchCharacter)(wchar_t code_point);
+
+typedef struct Font
+{
+    uint8_t height;
+    FetchCharacter mapping;
+} Font;
 
 #endif

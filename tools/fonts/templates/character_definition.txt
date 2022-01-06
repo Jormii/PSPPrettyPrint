@@ -1,0 +1,6 @@
+uint8_t U_{code_point_hex}_{name_low}_bitmap[{width} * {height}] = {bitmap};
+Character U_{code_point_hex}_{name_low} = {{
+    .character_type = {character_type},
+    .width = {width},
+    .bitmap = U_{code_point_hex}_{name_low}_bitmap}};
+

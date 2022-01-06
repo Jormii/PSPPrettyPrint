@@ -7,7 +7,7 @@
 
 void draw_word(const Window *window, const wchar_t *word, const rgb_t *color,
                size_t length, Cursor *cursor);
-void draw_character(const Character *character, rgb_t color,
+void draw_character(const Character *character, const Font *font, rgb_t color,
                     const Margin *margin, const Cursor *cursor);
 
 void force_draw_word_cb(const Window *window, WindowTraversal *wt,
@@ -36,19 +36,20 @@ void display_window(const Window *window)
 void draw_word(const Window *window, const wchar_t *word, const rgb_t *color,
                size_t length, Cursor *cursor)
 {
+    const Font *font = window->font;
     const Margin *margin = &(window->margin);
 
     for (size_t i = 0; i < length; ++i)
     {
         wchar_t code_point = word[i];
-        const Character *character = window->font(code_point);
+        const Character *character = font->mapping(code_point);
 
         // Draw character if any of the pixels it should be drawn to is above
         // the top margin
-        boolean_t draw = (cursor->y + character->height) > margin->top;
+        boolean_t draw = (cursor->y + font->height) > margin->top;
         if (draw)
         {
-            draw_character(character, color[i], margin, cursor);
+            draw_character(character, font, color[i], margin, cursor);
         }
 
         // Add width and an additional pixel if it's not the last character
@@ -56,11 +57,11 @@ void draw_word(const Window *window, const wchar_t *word, const rgb_t *color,
     }
 }
 
-void draw_character(const Character *character, rgb_t color,
+void draw_character(const Character *character, const Font *font, rgb_t color,
                     const Margin *margin, const Cursor *cursor)
 {
     screen_t y0 = cursor->y;
-    screen_t yf = MIN(cursor->y + character->height, margin->bottom);
+    screen_t yf = MIN(cursor->y + font->height, margin->bottom);
     size_t bitmap_index = 0;
 
     // Character should be drawn starting at a pixel above the top margin
@@ -77,12 +78,8 @@ void draw_character(const Character *character, rgb_t color,
     {
         for (screen_t x = 0; x < character->width; ++x)
         {
-            // TODO: Can't be done with a product?
-            if (character->bitmap[bitmap_index])
-            {
-                draw_buffer[buffer_index + x] = color;
-            }
-
+            boolean_t draw = character->bitmap[bitmap_index];
+            draw_buffer[buffer_index + x] = color * draw;
             bitmap_index += 1;
         }
 
@@ -93,6 +90,8 @@ void draw_character(const Character *character, rgb_t color,
 void force_draw_word_cb(const Window *window, WindowTraversal *wt,
                         const Character *character, size_t character_index)
 {
+    const Font *font = window->font;
+
     // Get pointer to beginning of the word
     size_t offset = character_index - wt->word_length;
     wchar_t *word = window->buffer.text + offset;
@@ -103,7 +102,7 @@ void force_draw_word_cb(const Window *window, WindowTraversal *wt,
     size_t iterations = wt->word_length;
     for (size_t i = 0; i < iterations && keep_force_drawing; ++i)
     {
-        const Character *character_to_draw = window->font(*word);
+        const Character *character_to_draw = font->mapping(*word);
         screen_t expected_cursor_x = wt->cursor.x + character_to_draw->width;
         if (expected_cursor_x > window->margin.right)
         {
@@ -111,12 +110,12 @@ void force_draw_word_cb(const Window *window, WindowTraversal *wt,
             keep_force_drawing = FALSE;
 
             wt->cursor.x = window->margin.left;
-            wt->cursor.y += character->height + 1;
+            wt->cursor.y += font->height + 1;
         }
         else
         {
-            draw_character(character_to_draw, *color, &(window->margin),
-                           &(wt->cursor));
+            draw_character(character_to_draw, font, *color,
+                           &(window->margin), &(wt->cursor));
 
             wt->cursor.x = expected_cursor_x + 1;
             wt->word_length -= 1;
@@ -141,13 +140,15 @@ void advance_word_cb(const Window *window, WindowTraversal *wt,
 void draw_word_cb(const Window *window, WindowTraversal *wt,
                   const Character *character, size_t character_index)
 {
+    const Font *font = window->font;
+
     // Check if the word fits the current line
     // -1 to remove the pixel between characters added in "advance_word_cb"
     screen_t expected_cursor_x = wt->cursor.x + wt->word_length_pixels - 1;
     if (expected_cursor_x > window->margin.right)
     {
         wt->cursor.x = window->margin.left;
-        wt->cursor.y += character->height + 1;
+        wt->cursor.y += font->height + 1;
     }
 
     // Draw. "draw_word" updates the cursor
@@ -164,14 +165,14 @@ void draw_word_cb(const Window *window, WindowTraversal *wt,
     {
     case CHAR_TYPE_NEW_LINE:
         wt->cursor.x = window->margin.left;
-        wt->cursor.y += character->height + 1;
+        wt->cursor.y += font->height + 1;
         break;
     case CHAR_TYPE_WHITESPACE:
         wt->cursor.x += character->width;
         if (wt->cursor.x > window->margin.right)
         {
             wt->cursor.x = window->margin.left;
-            wt->cursor.y += character->height + 1;
+            wt->cursor.y += font->height + 1;
         }
         break;
     case CHAR_TYPE_NULL:

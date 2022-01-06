@@ -31,16 +31,10 @@ void display_scrollbar(const Scrollbar *scrollbar, rgb_t color)
     Cursor cursor;
     w_get_cursor(scrollbar->window, &cursor);
 
-    // TODO: Asking for null character is weird
-    const Character *null_character = scrollbar->window->font(L'\0');
-    if (null_character == 0)
-    {
-        log_error_and_idle(L"Error in \"display_scrollbar\". Character has no definitions for null characters");
-    }
-
+    const Font *font = scrollbar->window->font;
     screen_t bar_top = margin.top + 2;
     screen_t bar_bottom = margin.bottom - 2;
-    screen_t in_end = MAX(cursor.y + null_character->height - 1, margin.bottom);
+    screen_t in_end = MAX(cursor.y + font->height - 1, margin.bottom);
 
     float in_start_f = (float)(margin.top - scrollbar->window->scroll_amount);
     float in_end_f = (float)in_end;
