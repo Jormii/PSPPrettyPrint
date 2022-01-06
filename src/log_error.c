@@ -5,9 +5,9 @@
 #include "window.h"
 #include "callbacks.h"
 #include "log_error.h"
+#include "base_set_font.h"
 #include "screen_buffer.h"
 #include "window_display.h"
-#include "base_character_set_font.h"
 
 void log_error_and_idle(const wchar_t *format, ...)
 {
@@ -30,7 +30,7 @@ void log_error_and_idle(const wchar_t *format, ...)
     window.margin.top = 0;
     window.margin.bottom = SCREEN_HEIGHT - 1;
     create_text_buffer(length, &(window.buffer));
-    window.font = get_base_character_set_character;
+    window.font = &base_set_font;
     window.scroll_amount = 0;
 
     tb_print(&(window.buffer), 0xFFFFFFFF, string);

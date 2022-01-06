@@ -5,11 +5,11 @@
 #include "window.h"
 #include "callbacks.h"
 #include "scrollbar.h"
+#include "base_set_font.h"
 #include "screen_buffer.h"
 #include "margin_display.h"
 #include "window_display.h"
 #include "scrollbar_display.h"
-#include "base_character_set_font.h"
 
 PSP_MODULE_INFO("PrettyPrint", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
@@ -37,7 +37,7 @@ int main()
     create_text_buffer(2048, &(left.buffer));
     left.buffer.overflow_cb = w_buffer_overflow_cb;
     left.buffer.ptr_cb = (void *)&(left);
-    left.font = get_base_character_set_character;
+    left.font = &base_set_font;
     left.scroll_amount = 0;
 
     Window right;
@@ -48,7 +48,7 @@ int main()
     create_text_buffer(2048, &(right.buffer));
     right.buffer.overflow_cb = w_buffer_overflow_cb;
     right.buffer.ptr_cb = (void *)&(right);
-    right.font = get_base_character_set_character;
+    right.font = &base_set_font;
     right.scroll_amount = 0;
 
     // Create scrollbar

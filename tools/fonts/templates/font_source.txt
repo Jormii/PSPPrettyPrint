@@ -1,0 +1,20 @@
+#include "{name_low}_font.h"
+
+Font {name_low}_font = {{
+    .height = {height},
+    .mapping = get_{name_low}_character}};
+
+{characters_definitions}
+
+const Character *get_{name_low}_character(wchar_t code_point)
+{{
+    Character *c = {default};
+    switch (code_point)
+    {{
+        {switch_cases}
+        default:
+            break;
+    }}
+
+    return c;
+}}

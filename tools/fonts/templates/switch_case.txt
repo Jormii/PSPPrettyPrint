@@ -1,0 +1,3 @@
+    case {code_point_hex}:
+        c = &U_{code_point_hex}_{name_low};
+        break;
