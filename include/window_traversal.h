@@ -1,10 +1,9 @@
 #ifndef WINDOW_TRAVERSAL_H
 #define WINDOW_TRAVERSAL_H
 
-#include "cursor.h"
 #include "window.h"
 
-typedef struct WindowTraversal_st
+typedef struct WindowTraversal
 {
     boolean_t continue_traversing;
     Cursor cursor;
@@ -12,10 +11,12 @@ typedef struct WindowTraversal_st
     size_t word_length_pixels;
 } WindowTraversal;
 
-typedef void (*WindowTraversalCallback)(const Window *window, WindowTraversal *wt, const Character *character, size_t character_index);
-typedef struct WindowTraversalInput_st
+typedef void (*WindowTraversalCallback)(
+    const Window *window, WindowTraversal *wt,
+    const Character *character, size_t character_index);
+
+typedef struct WindowTraversalInput
 {
-    size_t starting_index;
     WindowTraversalCallback wide_word_cb;
     WindowTraversalCallback normal_character_cb;
     WindowTraversalCallback new_line_cb;
@@ -25,6 +26,7 @@ typedef struct WindowTraversalInput_st
     WindowTraversalCallback null_character_cb;
 } WindowTraversalInput;
 
-void traverse_window(const Window *window, const WindowTraversalInput *wt_input, Cursor *out_cursor);
+void wt_traverse(const Window *window, const WindowTraversalInput *wt_input,
+                 Cursor *out_cursor);
 
 #endif

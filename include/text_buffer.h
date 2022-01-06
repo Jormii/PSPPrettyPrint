@@ -3,12 +3,17 @@
 
 #include <stddef.h>
 
-#include "rgb.h"
+#include "types.h"
 
-struct TextBuffer_st;
-typedef void (*BufferOverflow)(struct TextBuffer_st *buffer, void *ptr); // TODO: Pointer is very ugly
+/**
+ * TODOs
+ * - The void pointer in the BufferOverflow callback is ugly
+ */
 
-typedef struct TextBuffer_st
+struct TextBuffer;
+typedef void (*BufferOverflow)(struct TextBuffer *buffer, void *ptr);
+
+typedef struct TextBuffer
 {
     size_t length;
     size_t max_length;
@@ -21,10 +26,10 @@ typedef struct TextBuffer_st
 
 void create_text_buffer(size_t length, TextBuffer *out_buffer);
 
-void print_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string);
-void printf_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...);
+void tb_print(TextBuffer *buffer, rgb_t color, const wchar_t *string);
+void tb_printf(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...);
 
-void clear_text_buffer(TextBuffer *buffer, void *null_ptr);
-void clear_text_buffer_first_paragraph(TextBuffer *buffer, void *null_ptr);
+void tb_clear(TextBuffer *buffer, void *null_ptr);
+void tb_clear_first_paragraph(TextBuffer *buffer, void *null_ptr);
 
 #endif

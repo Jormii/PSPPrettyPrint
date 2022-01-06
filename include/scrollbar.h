@@ -3,10 +3,10 @@
 
 #include "window.h"
 
-typedef struct Scrollbar_st
+typedef struct Scrollbar
 {
-    const screen_t margin_left;
-    const screen_t margin_right;
+    screen_t margin_left;
+    screen_t margin_right;
     const Window *window;
 } Scrollbar;
 

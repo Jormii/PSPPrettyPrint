@@ -3,38 +3,38 @@
 
 #include <pspdisplay.h>
 
-#include "boolean.h"
 #include "screen_buffer.h"
-
-#define SCREEN_ACTUAL_WIDTH 480
 
 #define DISPLAY_BUFFER_ADDRESS 0x4000000
 #define DRAW_BUFFER_ADDRESS 0x4300000
 
-boolean_t initialized_screen_buffer = FALSE;
+rgb_t *display_buffer;
+boolean_t sb_initialized = FALSE;
 
-void initialize_screen_buffer()
+void sb_initialize()
 {
-    if (initialized_screen_buffer)
+    if (sb_initialized)
     {
         return;
     }
 
-    initialized_screen_buffer = TRUE;
+    sb_initialized = TRUE;
     display_buffer = (rgb_t *)DISPLAY_BUFFER_ADDRESS;
     draw_buffer = (rgb_t *)DRAW_BUFFER_ADDRESS;
 
-    // Initialize as black
+    // Fill black
     for (size_t i = 0; i < BUFFER_SIZE; ++i)
     {
         display_buffer[i] = 0;
     }
 
-    sceDisplaySetMode(0, SCREEN_ACTUAL_WIDTH, SCREEN_HEIGHT);
-    sceDisplaySetFrameBuf(display_buffer, BUFFER_WIDTH, PSP_DISPLAY_PIXEL_FORMAT_8888, PSP_DISPLAY_SETBUF_IMMEDIATE);
+    sceDisplaySetMode(0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    sceDisplaySetFrameBuf(display_buffer, BUFFER_WIDTH,
+                          PSP_DISPLAY_PIXEL_FORMAT_8888,
+                          PSP_DISPLAY_SETBUF_IMMEDIATE);
 }
 
-void clear_color_buffer(rgb_t color)
+void sb_clear_buffer(rgb_t color)
 {
     for (size_t i = 0; i < BUFFER_SIZE; ++i)
     {
@@ -42,11 +42,13 @@ void clear_color_buffer(rgb_t color)
     }
 }
 
-void swap_buffers()
+void sb_swap_buffers()
 {
     rgb_t *tmp = display_buffer;
     display_buffer = draw_buffer;
     draw_buffer = tmp;
 
-    sceDisplaySetFrameBuf(display_buffer, BUFFER_WIDTH, PSP_DISPLAY_PIXEL_FORMAT_8888, PSP_DISPLAY_SETBUF_NEXTFRAME);
+    sceDisplaySetFrameBuf(display_buffer, BUFFER_WIDTH,
+                          PSP_DISPLAY_PIXEL_FORMAT_8888,
+                          PSP_DISPLAY_SETBUF_NEXTFRAME);
 }
