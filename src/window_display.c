@@ -78,12 +78,8 @@ void draw_character(const Character *character, const Font *font, rgb_t color,
     {
         for (screen_t x = 0; x < character->width; ++x)
         {
-            // TODO: Can't be done with a product?
-            if (character->bitmap[bitmap_index])
-            {
-                draw_buffer[buffer_index + x] = color;
-            }
-
+            boolean_t draw = character->bitmap[bitmap_index];
+            draw_buffer[buffer_index + x] = color * draw;
             bitmap_index += 1;
         }
 
