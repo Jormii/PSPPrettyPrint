@@ -14,8 +14,6 @@
 
 /**
  * TODOs
- * - Right now height is a constant across all characters in a character set
- *      => Wasted space
  * - Bitmap array uses a whole byte to store a single bit worth of information
  *      => Consider masks to save space
  */
