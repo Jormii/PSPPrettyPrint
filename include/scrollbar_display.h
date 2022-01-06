@@ -3,6 +3,6 @@
 
 #include "scrollbar.h"
 
-void display_scrollbar(const Scrollbar *scrollbar);
+void display_scrollbar(const Scrollbar *scrollbar, rgb_t color);
 
 #endif

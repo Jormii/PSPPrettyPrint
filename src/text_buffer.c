@@ -13,14 +13,14 @@ void create_text_buffer(size_t length, TextBuffer *out_buffer)
     out_buffer->max_length = length;
     out_buffer->text = (wchar_t *)malloc(real_size * sizeof(wchar_t));
     out_buffer->color = (rgb_t *)malloc(real_size * sizeof(rgb_t));
-    out_buffer->overflow_cb = clear_text_buffer;
+    out_buffer->overflow_cb = tb_clear;
     out_buffer->ptr_cb = 0;
 
     out_buffer->text[0] = L'\0';
     out_buffer->color[0] = 0;
 }
 
-void print_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string)
+void tb_print(TextBuffer *buffer, rgb_t color, const wchar_t *string)
 {
     size_t length = wcslen(string);
     size_t final_length = buffer->length + length;
@@ -31,6 +31,7 @@ void print_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string
         final_length = buffer->length + length;
     }
 
+    // Update buffer and variables
     for (size_t src = 0, dst = buffer->length;
          src < length;
          ++src, ++dst)
@@ -44,7 +45,7 @@ void print_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *string
     buffer->color[buffer->length] = 0;
 }
 
-void printf_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...)
+void tb_printf(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...)
 {
     // Format string
     va_list vararg;
@@ -60,20 +61,20 @@ void printf_to_text_buffer(TextBuffer *buffer, rgb_t color, const wchar_t *forma
     va_end(vararg);
 
     // Print
-    print_to_text_buffer(buffer, color, string);
+    tb_print(buffer, color, string);
     free(string);
 }
 
-void clear_text_buffer(TextBuffer *buffer, void *null_ptr)
+void tb_clear(TextBuffer *buffer, void *null_ptr)
 {
     buffer->length = 0;
     buffer->text[0] = L'\0';
     buffer->color[0] = 0;
 }
 
-void clear_text_buffer_first_paragraph(TextBuffer *buffer, void *null_ptr)
+void tb_clear_first_paragraph(TextBuffer *buffer, void *null_ptr)
 {
-    // Determine when the second paragraph starts
+    // Determine where the second paragraph starts
     size_t end = 0;
     while (end < buffer->length && buffer->text[end] != L'\n')
     {
@@ -89,11 +90,11 @@ void clear_text_buffer_first_paragraph(TextBuffer *buffer, void *null_ptr)
     if (end == buffer->length)
     {
         // The content in the buffer is a single paragraph
-        clear_text_buffer(buffer, buffer->ptr_cb);
+        tb_clear(buffer, buffer->ptr_cb);
         return;
     }
 
-    // Update buffer
+    // Update buffer and variables
     for (size_t src = end, dst = 0;
          src < buffer->length;
          ++src, ++dst)

@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-typedef struct Margin_st
+typedef struct Margin
 {
     screen_t left;
     screen_t right;

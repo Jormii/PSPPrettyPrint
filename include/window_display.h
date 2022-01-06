@@ -3,7 +3,6 @@
 
 #include "window.h"
 
-void clear_margin(const Margin *margin);
 void display_window(const Window *window);
 
 #endif

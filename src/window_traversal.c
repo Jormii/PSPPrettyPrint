@@ -1,7 +1,8 @@
 #include "log_error.h"
 #include "window_traversal.h"
 
-void traverse_window(const Window *window, const WindowTraversalInput *wt_input, Cursor *out_cursor)
+void wt_traverse(const Window *window, const WindowTraversalInput *wt_input,
+                 Cursor *out_cursor)
 {
     const Margin *margin = &(window->margin);
     WindowTraversal wt = {
@@ -11,17 +12,19 @@ void traverse_window(const Window *window, const WindowTraversalInput *wt_input,
         .word_length_pixels = 0};
 
     screen_t margin_width = margin->right - margin->left + 1;
-    for (size_t i = wt_input->starting_index; i <= window->buffer.length && wt.continue_traversing; ++i)
+    for (size_t i = 0; i <= window->buffer.length && wt.continue_traversing; ++i)
     {
-        wchar_t codepoint = window->buffer.text[i];
-        const Character *character = window->font(codepoint);
+        wchar_t code_point = window->buffer.text[i];
+        const Character *character = window->font(code_point);
         if (character == 0)
         {
-            log_error_and_idle(L"Character with codepoint %d can't be represented", codepoint);
+            log_error_and_idle(L"Character with code_point %d can't be represented",
+                               code_point);
         }
 
         if (wt.word_length_pixels > margin_width)
         {
+            // A word so long it would need more than one line to be printed
             if (wt_input->wide_word_cb != 0)
             {
                 wt_input->wide_word_cb(window, &wt, character, i);
@@ -50,8 +53,8 @@ void traverse_window(const Window *window, const WindowTraversalInput *wt_input,
             cb = wt_input->null_character_cb;
             break;
         default:
-            log_error_and_idle(L"Fount character with codepoint %d with unknown character type %u",
-                               codepoint, character->character_type);
+            log_error_and_idle(L"Fount character with code_point %d with unknown character type %u",
+                               code_point, character->character_type);
         }
 
         if (cb != 0)

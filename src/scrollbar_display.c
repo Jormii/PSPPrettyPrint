@@ -2,65 +2,67 @@
 #include "log_error.h"
 #include "scrollbar.h"
 #include "screen_buffer.h"
-#include "window_display.h"
+#include "margin_display.h"
+#include "scrollbar_display.h"
 
-void display_scrollbar(const Scrollbar *scrollbar)
+void display_scrollbar(const Scrollbar *scrollbar, rgb_t color)
 {
-    // Clear printing target
+    // Clear drawing regions
     Margin margin = {
         .left = scrollbar->margin_left,
         .right = scrollbar->margin_right,
         .top = scrollbar->window->margin.top,
         .bottom = scrollbar->window->margin.bottom};
 
-    clear_margin(&margin);
+    fill_margin(&margin, 0); // Fill black
 
-    // Print top and bottom boundaries
-    screen_t width = scrollbar->margin_right - scrollbar->margin_left + 1;
-    size_t index_top = scrollbar->margin_left + scrollbar->window->margin.top * BUFFER_WIDTH;
-    size_t index_bottom = scrollbar->margin_left + scrollbar->window->margin.bottom * BUFFER_WIDTH;
+    // Draw top and bottom boundaries
+    screen_t width = margin.right - margin.left + 1;
+    size_t index_top = TEXT_BUFFER_INDEX(margin.left, margin.top);
+    size_t index_bottom = TEXT_BUFFER_INDEX(margin.left, margin.bottom);
 
     for (screen_t i = 0; i < width; ++i)
     {
-        draw_buffer[index_top + i] = 0xFFFFFFFF;
-        draw_buffer[index_bottom + i] = 0xFFFFFFFF;
+        draw_buffer[index_top + i] = color;
+        draw_buffer[index_bottom + i] = color;
     }
 
     // Map visible range to scrollbar range
     Cursor cursor;
-    get_window_cursor(scrollbar->window, &cursor);
+    w_get_cursor(scrollbar->window, &cursor);
 
+    // TODO: Asking for null character is weird
     const Character *null_character = scrollbar->window->font(L'\0');
     if (null_character == 0)
     {
         log_error_and_idle(L"Error in \"display_scrollbar\". Character has no definitions for null characters");
     }
 
-    screen_t bar_top = scrollbar->window->margin.top + 2;
-    screen_t bar_bottom = scrollbar->window->margin.bottom - 2;
-    screen_t last_pixel_y = cursor.y + null_character->height - 1;
-    screen_t in_end = MAX(last_pixel_y, scrollbar->window->margin.bottom);
+    screen_t bar_top = margin.top + 2;
+    screen_t bar_bottom = margin.bottom - 2;
+    screen_t in_end = MAX(cursor.y + null_character->height - 1, margin.bottom);
 
-    float in_start_f = (float)(scrollbar->window->margin.top - scrollbar->window->scroll_amount);
+    float in_start_f = (float)(margin.top - scrollbar->window->scroll_amount);
     float in_end_f = (float)in_end;
     float out_start_f = (float)bar_top;
     float out_end_f = (float)bar_bottom;
 
     float slope = (out_end_f - out_start_f) / (in_end_f - in_start_f);
 
-    float x0 = (float)scrollbar->window->margin.top;
-    float xf = (float)scrollbar->window->margin.bottom;
+    float x0 = (float)margin.top;
+    float xf = (float)margin.bottom;
     screen_t y0 = (screen_t)(out_start_f + slope * (x0 - in_start_f));
     screen_t yf = (screen_t)(out_start_f + slope * (xf - in_start_f));
 
     // Draw scrollbar
-    size_t buffer_index = scrollbar->margin_left + y0 * BUFFER_WIDTH;
+    size_t buffer_index = TEXT_BUFFER_INDEX(margin.left, y0);
     for (screen_t y = y0; y <= yf; ++y)
     {
         for (screen_t i = 0; i < width; ++i)
         {
-            draw_buffer[buffer_index + i] = 0xFFFFFFFF;
+            draw_buffer[buffer_index + i] = color;
         }
+
         buffer_index += BUFFER_WIDTH;
     }
 }

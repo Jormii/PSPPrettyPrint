@@ -23,7 +23,7 @@ void log_error_and_idle(const wchar_t *format, ...)
     vswprintf(string, length, format, vararg);
     va_end(vararg);
 
-    // Print error message
+    // Create window that covers the whole screen and print error message
     Window window;
     window.margin.left = 0;
     window.margin.right = SCREEN_WIDTH - 1;
@@ -33,12 +33,12 @@ void log_error_and_idle(const wchar_t *format, ...)
     window.font = get_base_character_set_character;
     window.scroll_amount = 0;
 
-    print_to_text_buffer(&(window.buffer), 0xFFFFFFFF, string);
+    tb_print(&(window.buffer), 0xFFFFFFFF, string);
     display_window(&window);
-    swap_buffers();
+    sb_swap_buffers();
     free(string);
 
-    // Loop indefinitely
+    // Loop until game closes
     while (running())
     {
         ;
