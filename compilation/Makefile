@@ -1,9 +1,10 @@
 MAIN_OBJ = ../main.o
 SOURCE_DIR = ../src/
-INCLUDE_DIR = "../include/"
+NON_LIBRARY_SOURCE_DIR = ../non-library_src/
+INCLUDE_DIR = ../include/ ../non-library_include/
 
 TARGET = PSP_TARGET
-OBJS =  $(SOURCE_DIR)callbacks.o \
+OBJS =  $(NON_LIBRARY_SOURCE_DIR)callbacks.o \
 		$(SOURCE_DIR)log_error.o $(SOURCE_DIR)base_set_font.o \
 		$(SOURCE_DIR)screen_buffer.o \
 		$(SOURCE_DIR)text_buffer.o \

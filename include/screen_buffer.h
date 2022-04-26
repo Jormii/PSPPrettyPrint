@@ -1,7 +1,7 @@
 #ifndef SCREEN_BUFFER_H
 #define SCREEN_BUFFER_H
 
-#include "types.h"
+#include "pspp_types.h"
 
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 272
