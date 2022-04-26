@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#include "types.h"
+#include "pspp_types.h"
 
 /**
  * TODOs

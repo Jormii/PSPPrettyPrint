@@ -1,7 +1,7 @@
 #ifndef CURSOR_H
 #define CURSOR_H
 
-#include "types.h"
+#include "pspp_types.h"
 
 typedef struct Cursor
 {

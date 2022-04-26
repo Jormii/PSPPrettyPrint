@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#include "types.h"
+#include "pspp_types.h"
 
 #define CHAR_TYPE_NORMAL 0
 #define CHAR_TYPE_NEW_LINE 1

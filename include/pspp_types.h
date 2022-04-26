@@ -1,12 +1,12 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef PSPP_TYPES_H
+#define PSPP_TYPES_H
 
 #include <stdint.h>
 
 #define TRUE 1
 #define FALSE 0
 
-#define RGB(r, g, b) r + (g << 8) + (b << 16)
+#define RGB(r, g, b) (r + (g << 8) + (b << 16))
 
 typedef uint8_t boolean_t;
 
