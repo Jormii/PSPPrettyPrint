@@ -13,7 +13,7 @@ PSPP provides:
 - Text scroll.
 - Scrollbars to display progress.
 - Custom fonts. The library provides a default font set that prints the ASCII character set, Spanish specific characters and special characters for escape characters (these aren't printed by default).
-- A Python scipt to create these fonts using a sprite atlas as source.
+- A Python script to create these fonts using a sprite atlas as source.
 
 The main file provided outputs the following:
-(TODO: Include pic or video)
+![Screen capture](readme_resources/screen-capture.png)

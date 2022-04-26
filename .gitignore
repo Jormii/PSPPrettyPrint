@@ -8,3 +8,5 @@
 *.PBP
 *.elf
 *.SFO
+
+!readme_resources/screen-capture.png
