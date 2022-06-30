@@ -55,7 +55,7 @@ void tb_printf(TextBuffer *buffer, rgb_t color, const wchar_t *format, ...)
     int length = 1 + vfwprintf(stdout, format, vararg);
     va_end(vararg);
 
-    wchar_t *string = (wchar_t *)malloc(length + sizeof(wchar_t));
+    wchar_t *string = (wchar_t *)malloc(length * sizeof(wchar_t));
     va_start(vararg, format);
     vswprintf(string, length, format, vararg);
     va_end(vararg);
