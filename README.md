@@ -15,5 +15,11 @@ PSPP provides:
 - Custom fonts. The library provides a default font set that prints the ASCII character set, Spanish specific characters and special characters for escape characters (these aren't printed by default).
 - A Python script to create these fonts using a sprite atlas as source.
 
-The main file provided outputs the following:
+## Still example
+
+The provided main file outputs the following:
 ![Screen capture](readme_resources/screen-capture.png)
+
+## Animated example
+
+![Animated capture](readme_resources/animated-capture.gif)
