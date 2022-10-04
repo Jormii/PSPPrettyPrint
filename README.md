@@ -2,6 +2,8 @@
 
 PSP Pretty Print (PSPP) is a small library whose purpose is to extend the basic print-to-screen functionality provided by the PSPSDK.
 
+Read about it at [my blog](https://jormii.wordpress.com/2022/10/04/pspp-pre-rasterized-text-rendering/) or read the [in-depth paper](https://drive.google.com/file/u/1/d/1uMALJo6QBcKDnCsqUb3xI1Et1dGDQCDJ/view?usp=sharing).
+
 PSPP provides:
 - Simple usage.
 - Screen update on-demand.
