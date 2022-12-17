@@ -9,4 +9,5 @@
 *.elf
 *.SFO
 
+!SpanishCharacterSet.png
 !readme_resources/screen-capture.png
